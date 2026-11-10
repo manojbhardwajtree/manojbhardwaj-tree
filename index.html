@@ -1,21 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ManojBhardwaj.in</title>
+    <title>ManojBhardwaj.in - Family Matrix Portal</title>
     <style>
-        body { background: #7A0000; color: #FFD700; font-family: sans-serif; text-align: center; padding: 50px; }
-        .box { border: 4px solid #FFD700; padding: 30px; background: #110000; display: inline-block; border-radius: 10px; box-shadow: 0 0 20px #FF4500; }
-        h1 { color: #FFD700; margin-bottom: 5px; }
-        p { color: #FFA500; font-weight: bold; }
+        body { font-family: sans-serif; background: linear-gradient(135deg, #7A0000 0%, #FF4500 100%); color: #FFF; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 0 auto; background: rgba(15, 5, 5, 0.95); border: 5px solid #FFD700; border-radius: 14px; padding: 30px; box-shadow: 0 0 30px #FF4500; }
+        h1, h2 { color: #FFD700; text-transform: uppercase; }
+        .form-box { background: #220202; border: 2px solid #FFD700; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left; }
+        label { display: block; margin: 10px 0 5px; color: #FFA500; font-weight: bold; }
+        .input-field { width: 95%; padding: 10px; background: #000; border: 1px solid #FFA500; color: #FFD700; font-weight: bold; border-radius: 4px; }
+        .btn { display: block; width: 100%; padding: 15px; margin-top: 20px; background: #FFD700; color: #550000; font-size: 1.2em; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .btn:hover { background: #FFA500; color: #FFF; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>ManojBhardwaj.in</h1>
-        <p>🕉️ Family Tree Database & Matrix Registry 🕉️</p>
-        <hr style="border-color: #FFD700;">
-        <h2 style="color: #FFF;">System Online</h2>
-        <p style="color: #FFF; font-size: 1.2em;">Next Core Data Sync Slot: <span style="color: #FFD700;">M_24</span></p>
+<div class="container">
+    <h1>🕉️ ManojBhardwaj.in 🕉️</h1>
+    <h2>Family Tree & Matrix Registry</h2>
+    <hr style="border-color: #FFD700;">
+    
+    <div class="form-box">
+        <label>Active Member ID:</label>
+        <input type="text" class="input-field" value="M_24" readonly style="background:#330000; color:#FFA500; cursor:not-allowed;">
+        
+        <label>Select Generation Filter:</label>
+        <select class="input-field">
+            <option>Generation 3 (G3 - Ancestors Dropdown)</option>
+            <option>Generation 4 (G4)</option>
+            <option>Generation 5 (G5)</option>
+        </select>
+        
+        <label>Full Legal Name:</label>
+        <input type="text" class="input-field" placeholder="Enter family member name">
+        
+        <label>Select Father / Ascendant Connection:</label>
+        <select class="input-field">
+            <option>Shiv Dayal Mehta (M_00)</option>
+            <option>Ram Chand Mehta (M_01)</option>
+            <option>Manoj Mehta (M_22)</option>
+            <option>Sanjay Mehta (M_23)</option>
+        </select>
+        
+        <button class="btn" onclick="alert('Record synced successfully to cloud matrix!')">Sync Record to Family Ledger</button>
     </div>
+    
+    <div style="margin-top: 20px; font-weight: bold; color: #FFD700;">
+        <p>Total records currently stored: 24</p>
+        <button style="padding: 10px; margin: 5px; background:#444; color:#FFD700; border:1px solid #FFD700; cursor:pointer;" onclick="alert('Downloading matrix...')">📥 Download Data for historyhome.odf</button>
+    </div>
+</div>
 </body>
 </html>
