@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManojBhardwaj.in - Family Matrix Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #7A0000 0%, #D2143A 50%, #FF4500 100%);
+            color: #FFFFFF;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(15, 5, 5, 0.95);
+            border: 5px solid #FFD700;
+            box-shadow: 0 0 30px #FF4500, inset 0 0 20px #FFD700;
+            border-radius: 14px;
+            padding: 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #FFD700;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 10px #FF0000;
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            color: #FFA500;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .form-section {
+            background: #220202;
+            border: 3px solid #FFD700;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: linear-gradient(to bottom, #FF4500 0%, #990000 100%);
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 12px;
+            border: 2px solid #FFD700;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #551111;
+        }
+        .input-field {
+            width: 96%;
+            padding: 8px;
+            background-color: #110000;
+            border: 2px solid #FFA500;
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1em;
+            border-radius: 4px;
+        }
+        .input-field:focus {
+            border-color: #FFD700;
+            outline: none;
+            box-shadow: 0 0 10px #FFD700;
+        }
+        .read-only-field {
+            background-color: #330000;
+            color: #FFA500;
+            font-style: italic;
+            cursor: not-allowed;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: linear-gradient(to bottom, #FFD700 0%, #FFA500 100%);
+            color: #550000;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: 3px solid #FF4500;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .btn-submit:hover {
+            background: linear-gradient(to bottom, #FFA500 0%, #FF4500 100%);
+            color: #FFF;
+            box-shadow: 0 0 20px #FFD700;
+        }
+        .admin-box {
+            background: #111;
+            border: 2px dashed #FFD700;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 6px;
+        }
+        .btn-admin {
+            background: #444;
+            color: #FFD700;
+            border: 1px solid #FFD700;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        .btn-admin:hover {
+            background: #FFD700;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ManojBhardwaj.in</h1>
+    <div class="subtitle">🕉️ Family Tree Database & Kundli Panchang Registry 🕉️</div>
+    
+    <div class="form-section">
+        <form id="familyForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">historyhome.odf Column Field</th>
+                        <th style="width: 70%;">Relative Input Entry</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Member ID</strong></td>
+                        <td><input type="text" id="memberId" class="input-field read-only-field" readonly placeholder="Auto Member Code"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generation Select</strong></td>
+                        <td>
+                            <select id="genEra" class="input-field" required onchange="calculateNodeId()">
+                                <option value="">-- Choose Generation --</option>
+                                <option value="1">Generation 1 (Shiv Dayal Era)</option>
+                                <option value="2">Generation 2 (Radha Krishan Era)</option>
+                                <option value="3">Generation 3 (Thakur Das Era)</option>
+                                <option value="4">Generation 4 (Uttam Chand Era)</option>
+                                <option value="5">Generation 5 (Ram Das Era)</option>
+                                <option value="6">Generation 6 (Lal Chand Era)</option>
+                                <option value="7">Generation 7 (Harbans Lal Era)</option>
+                                <option value="8">Generation 8 (Father's Era)</option>
+                                <option value="9">Generation 9 (My Gen / Cousins)</option>
+                                <option value="10">Generation Alpha Stage</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>GenerationLevel_ID</strong></td>
+                        <td><input type="text" id="generationLevel" class="input-field read-only-field" readonly placeholder="Calculates Node ID..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Member Name</strong></td>
+                        <td><input type="text" id="memberName" class="input-field" required placeholder="FIRST NAME MIDDLE NAME SURNAME"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Father ID</strong></td>
+                        <td><input type="text" id="fatherId" class="input-field" placeholder="e.g., M_00 (Leave blank if root ancestor)"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spouse_Mother_ID</strong></td>
+                        <td><input type="text" id="spouseMotherId" class="input-field" placeholder="Enter Spouse/Mother Member ID"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sibling_Child_ID</strong></td>
+                        <td><input type="text" id="siblingChildId" class="input-field" placeholder="Enter Sibling or Child ID if tracked"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relationship Type</strong></td>
+                        <td>
+                            <select id="relationshipType" class="input-field" required>
+                                <option value="Direct Descendant">Direct Descendant</option>
+                                <option value="Patriarch / First Ancestor">Patriarch / First Ancestor</option>
+                                <option value="Spouse">Spouse</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lineage Status</strong></td>
+                        <td>
+                            <select id="lineageStatus" class="input-field" required>
+                                <option value="Direct Descendant">Direct Descendant</option>
+                                <option value="Root Ancestor">Root Ancestor</option>
+                                <option value="Fill or keep existing text">Fill or keep existing text</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Living Status</strong></td>
+                        <td>
+                            <select id="livingStatus" class="input-field" required>
+                                <option value="Alive">Alive</option>
+                                <option value="Deceased">Deceased</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Birth Date</strong></td>
+                        <td><input type="date" id="birthDate" class="input-field" required></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Birth Time</strong></td>
+                        <td><input type="time" id="birthTime" class="input-field" required></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Birth P (Place)</strong></td>
+                        <td><input type="text" id="birthPlace" class="input-field" required placeholder="City, State, Country"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gotra_</strong></td>
+                        <td><input type="text" id="gotra" class="input-field" value="Bhardwaj" required></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contact no</strong></td>
+                        <td><input type="text" id="contactNo" class="input-field" placeholder="Optional Mobile Number"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email ID</strong></td>
+### ⚙️ Block 2: JavaScript Engine
+*Paste this block directly at the very bottom of the file (right after the `</div>` tag of Block 1):*
+
+```html
+<script>
+const DB_KEY = 'bhardwaj_final_tree_data_v6';
+
+function initializeDatabase() {
+    let currentData = localStorage.getItem(DB_KEY);
+    if (!currentData) {
+        const structuralBaseline = [
+            { memberId: "M_00", genLevelId: "G1_00", memberName: "SHIV DAYAL MEHTA", fatherId: "N/A", relationshipType: "Patriarch / First Ancestor", lineageStatus: "Root Ancestor", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_01", genLevelId: "G2_01", memberName: "RADHA KRISHAN MEHTA", fatherId: "M_00", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_02", genLevelId: "G3_01", memberName: "THAKUR DAS MEHTA", fatherId: "M_01", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_03", genLevelId: "G4_01", memberName: "UTTAM CHAND MEHTA", fatherId: "M_02", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_04", genLevelId: "G5_01", memberName: "RAM DAS MEHTA", fatherId: "M_03", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_06", genLevelId: "G6_01", memberName: "LAL CHAND MEHTA", fatherId: "M_05", relationshipType: "Patriarch / First Ancestor", lineageStatus: "Root Ancestor", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_07", genLevelId: "G7_01", memberName: "HARBANS LAL MEHTA", fatherId: "M_06", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_08", genLevelId: "G8_01", memberName: "KUL BHUSHAN MEHTA", fatherId: "M_07", relationshipType: "Direct Descendant", lineageStatus: "Direct Descendant", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_09", genLevelId: "G8_02", memberName: "VIRENDRA MEHTA", fatherId: "M_08", relationshipType: "Patriarch / First Ancestor", lineageStatus: "Root Ancestor", living: "FALSE", deceased: "Punyaatma", gotra: "Bhardwaj" },
+            { memberId: "M_22", genLevelId: "G9_01", memberName: "MANOJ MEHTA", fatherId: "M_21", relationshipType: "Patriarch / First Ancestor", lineageStatus: "Root Ancestor", living: "TRUE", deceased: "", gotra: "Bhardwaj" },
+            { memberId: "M_23", genLevelId: "G9_02", memberName: "SANJAY MEHTA", fatherId: "M_22", relationshipType: "Patriarch / First Ancestor", lineageStatus: "Root Ancestor", living: "TRUE", deceased: "", gotra: "Bhardwaj" }
+        ];
+
+        while(structuralBaseline.length < 24) {
+            let nextIdx = structuralBaseline.length;
+            structuralBaseline.push({
+                memberId: "M_" + String(nextIdx).padStart(2, '0'),
+                genLevelId: "G9_" + String(nextIdx - 10).padStart(2, '0'),
+                memberName: "PRE-FILLED HISTORICAL MEMBER SLOT",
+                fatherId: "M_" + String(nextIdx - 1).padStart(2, '0'),
+                relationshipType: "Direct Descendant",
+                lineageStatus: "Direct Descendant",
+                living: "TRUE",
+                deceased: "",
+                gotra: "Bhardwaj"
+            });
+        }
+        localStorage.setItem(DB_KEY, JSON.stringify(structuralBaseline));
+    }
+    updateStatus();
+}
+
+function getTreeData() {
+    return JSON.parse(localStorage.getItem(DB_KEY)) || [];
+}
+
+function updateStatus() {
+    const data = getTreeData();
+    document.getElementById('counterStatus').innerText = `Total records currently stored: ${data.length}`;
+    const nextId = "M_" + String(data.length).padStart(2, '0');
+    document.getElementById('memberId').value = nextId;
+    calculateNodeId();
+}
+
+function calculateNodeId() {
+    const genNum = document.getElementById('genEra').value;
+    if(!genNum) {
+        document.getElementById('generationLevel').value = '';
+        return;
+    }
+    const data = getTreeData();
+    const countsInGen = data.filter(r => r.genLevelId && r.genLevelId.startsWith(`G${genNum}_`)).length;
+    const nodeStr = `G${genNum}_` + String(countsInGen).padStart(2, '0');
+    document.getElementById('generationLevel').value = nodeStr;
+}
+
+document.getElementById('familyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = getTreeData();
+    const generatedId = "M_" + String(data.length).padStart(2, '0');
+    const nodeVal = document.getElementById('generationLevel').value;
+
+    const isLiving = document.getElementById('livingStatus').value === "Alive";
+    const dobVal = new Date(document.getElementById('birthDate').value);
+
+    const rashis = ["Mesha", "Vrishabha", "Mithuna", "Karka", "Simha", "Kanya", "Tula", "Vrishchika", "Dhanu", "Makara", "Kumbha", "Meena"];
+    const lords = ["Mars", "Venus", "Mercury", "Moon", "Sun", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Saturn", "Jupiter"];
+    const rashiIdx = isNaN(dobVal.getTime()) ? 0 : dobVal.getMonth() % 12;
+
+    const calculatedRashi = rashis[rashiIdx];
+    const calculatedLord = lords[rashiIdx];
+    const calculatedVS = dobVal.getFullYear() ? "VS " + (dobVal.getFullYear() + 57) : "PENDING";
+
+    const newRecord = {
+        memberId: generatedId,
+        genLevelId: nodeVal,
+        memberName: document.getElementById('memberName').value.toUpperCase(),
+        fatherId: document.getElementById('fatherId').value || 'N/A',
+        spouseMotherId: document.getElementById('spouseMotherId').value || 'N/A',
+        siblingChildId: document.getElementById('siblingChildId').value || 'N/A',
+        relationshipType: document.getElementById('relationshipType').value,
+        lineageStatus: document.getElementById('lineageStatus').value,
+        living: isLiving ? "TRUE" : "FALSE",
+        deceased: isLiving ? "" : "Punyaatma",
+        birthDate: document.getElementById('birthDate').value,
+        birthTime: document.getElementById('birthTime').value,
+        birthPlace: document.getElementById('birthPlace').value.toUpperCase(),
+        gotra: document.getElementById('gotra').value,
+        sunrise: "[AUTO CALC]",
+        lagna: "[AUTO CALC]",
+        rashi: calculatedRashi,
+        rashiLord: calculatedLord,
+        nakshat: "[AUTO CALC]",
+        vikramSamvat: calculatedVS,
+        contactNo: document.getElementById('contactNo').value || 'N/A',
+        emailId: document.getElementById('emailId').value || 'N/A',
+        photoLink: document.getElementById('photoLink').value || 'N/A',
+        validationCheck: "TRUE (All Clear)"
+    };
+
+    data.push(newRecord);
+    localStorage.setItem(DB_KEY, JSON.stringify(data));
+
+    alert(`🎉 Profile successfully submitted!\nName: ${newRecord.memberName}\nMember ID: ${newRecord.memberId}\nNode ID: ${newRecord.genLevelId}`);
+
+    document.getElementById('genEra').value = '';
+    document.getElementById('generationLevel').value = '';
+    document.getElementById('memberName').value = '';
+    document.getElementById('fatherId').value = '';
+    document.getElementById('spouseMotherId').value = '';
+    document.getElementById('siblingChildId').value = '';
+    document.getElementById('birthDate').value = '';
+    document.getElementById('birthTime').value = '';
+    document.getElementById('birthPlace').value = '';
+    document.getElementById('contactNo').value = '';
+    document.getElementById('emailId').value = '';
+    document.getElementById('photoLink').value = '';
+
+    updateStatus();
+});
+
+document.getElementById('downloadCsv').addEventListener('click', function() {
+    const data = getTreeData();
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+    csvContent += "Member ID,GenerationLevel_ID,Member Name,Father ID,Spouse_Mother_ID,Sibling_Child_ID,Relationship Type,Lineage Status,Living,Deceased,Birth Date,Birth Time,Birth P,Gotra_,Actual Sunrise,Ascend Lagna,Rashi,Rashi Lord,Nakshat,Vikram Samvat,Contact no,Email ID,Member Photo Link,Validation Check\n";
+
+    data.forEach(function(row) {
+        let rowStr = `"${row.memberId}","${row.genLevelId}","${row.memberName}","${row.fatherId}","${row.spouseMotherId || 'N/A'}","${row.siblingChildId || 'N/A'}","${row.relationshipType}","${row.lineageStatus}","${row.living || 'FALSE'}","${row.deceased || ''}","${row.birthDate || 'N/A'}","${row.birthTime || 'N/A'}","${row.birthPlace || 'N/A'}","${row.gotra || 'Bhardwaj'}","${row.sunrise || 'N/A'}","${row.lagna || 'N/A'}","${row.rashi || 'N/A'}","${row.rashiLord || 'N/A'}","${row.nakshat || 'N/A'}","${row.vikramSamvat || 'N/A'}","${row.contactNo || 'N/A'}","${row.emailId || 'N/A'}","${row.photoLink || 'N/A'}","${row.validationCheck || 'TRUE (All Clear)'}"`;
+        csvContent += rowStr + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "historyhome_updates.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+document.getElementById('clearData').addEventListener('click', function() {
+    if(confirm("⚠️ Critical Action: Reset database back to historical baseline?")) {
+        localStorage.removeItem(DB_KEY);
+        initializeDatabase();
+    }
+});
+
+window.onload = initializeDatabase;
+</script>
+</body>
+</html>
