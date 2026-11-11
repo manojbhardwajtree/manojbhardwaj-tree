@@ -47,7 +47,7 @@ async function lookupCoords() {
   }
   st.textContent = "🔍 Searching coordinates for " + raw + "...";
   try {
-    const r = await fetch("https://open-meteo.com" + encodeURIComponent(key) + "&count=1&language=en&format=json");
+    const r = await fetchhttps://open-meteo.com" + encodeURIComponent(key)+ "&count=1&language=en&format=json");
     const d = await r.json();
     if (d.results && d.results.length > 0) {
       const loc = d.results.at(0);
