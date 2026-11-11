@@ -1,225 +1,302 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ManojBhardwaj.in - Family Lineage &amp; Vedic Kundli Portal</title>
- <link rel="stylesheet" href="style.css">
-  <script src="https://cloudflare.com"></script>
-</head>
-<body>
+let currentRole = null;
+const FAMILY_STORAGE_KEY = "mb_family_ledger_clean_v1";
+const FAMILY_CREDS_KEY = "mb_family_creds_clean_v1";
 
-<div class="sacred-frame">
-  <div class="inner-portal">
+const DEFAULT_USERS = {
+  admin: { id: "Admin", pass: "admin123", role: "ADMIN" },
+  family: { id: "Family", pass: "family123", role: "FAMILY" }
+};
 
-    <!-- Sacred Lord Ganesha Header -->
-    <div class="ganesha-header">
-      <svg width="78" height="78" viewBox="0 0 120 120" style="display:block; margin:0 auto 4px auto;">
-        <circle cx="60" cy="60" r="56" fill="#4A0202" stroke="#FFD700" stroke-width="3"/>
-        <circle cx="60" cy="60" r="49" fill="none" stroke="#FF9933" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <path d="M42 40 L60 16 L78 40 Z" fill="#FFD700"/>
-        <line x1="47" y1="32" x2="73" y2="32" stroke="#8B0000" stroke-width="2.5"/>
-        <ellipse cx="32" cy="62" rx="13" ry="18" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
-        <ellipse cx="88" cy="62" rx="13" ry="18" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
-        <circle cx="60" cy="58" r="22" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
-        <path d="M60 62 C60 80, 46 84, 48 96 C49 102, 57 101, 56 95" fill="none" stroke="#FFD700" stroke-width="6" stroke-linecap="round"/>
-        <line x1="55" y1="44" x2="65" y2="44" stroke="#FFF" stroke-width="2"/>
-        <line x1="55" y1="48" x2="65" y2="48" stroke="#FFF" stroke-width="2"/>
-        <circle cx="60" cy="46" r="2" fill="#B30000"/>
-        <circle cx="51" cy="55" r="2.3" fill="#2B0500"/>
-        <circle cx="69" cy="55" r="2.3" fill="#2B0500"/>
-        <path d="M47 72 L40 80" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
-        <path d="M73 72 L77 76" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
-      </svg>
-      <div class="mantra">॥ श्री गणेशाय नमः ॥</div>
-      <h1>ManojBhardwaj.in</h1>
-      <p style="margin:2px 0 0 0; color:#FFE8A3; font-size:0.92em;">Bhardwaj Family Lineage Registry &amp; Vedic Panchang / Kundli Portal</p>
-    </div>
+function loadCreds() {
+  try {
+    const raw = localStorage.getItem(FAMILY_CREDS_KEY);
+    return raw ? JSON.parse(raw) : DEFAULT_USERS;
+  } catch (e) {
+    return DEFAULT_USERS;
+  }
+}
 
-    <!-- Navigation Tabs -->
-    <div class="tabs no-print">
-      <button id="tabKundliBtn" class="tab-btn active" onclick="switchTab('kundli')">🪐 Free Kundli &amp; Panchang Generator</button>
-      <button id="tabFamilyBtn" class="tab-btn" onclick="switchTab('family')">🌳 Family Lineage Portal (Login)</button>
-    </div>
+function loadRecords() {
+  try {
+    const raw = localStorage.getItem(FAMILY_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : new Array();
+  } catch (e) {
+    return new Array();
+  }
+}
 
-    <!-- ================= TAB 1: PUBLIC & FAMILY KUNDLI GENERATOR ================= -->
-    <div id="kundliSection">
-      <h2>🪐 Instant Vedic Kundli, Panchang &amp; Yearly Forecast</h2>
-      <p style="text-align:center; font-size:0.88em; color:#FFE8A3;">Enter birth details below. Place of birth automatically detects Latitude &amp; Longitude.</p>
+function saveRecords(list) {
+  localStorage.setItem(FAMILY_STORAGE_KEY, JSON.stringify(list));
+}
 
-      <div class="grid no-print">
-        <div>
-          <label>First Name *</label>
-          <input id="kFirst" placeholder="e.g., Manoj" required>
-        </div>
-        <div>
-          <label>Last Name *</label>
-          <input id="kLast" placeholder="e.g., Mehta" required>
-        </div>
-        <div>
-          <label>Date of Birth *</label>
-          <input id="kDob" type="date" required>
-        </div>
-        <div>
-          <label>Time of Birth *</label>
-          <input id="kTob" type="time" value="08:45" required>
-        </div>
-        <div>
-          <label>Birth Time Accuracy</label>
-          <select id="kTimeAcc">
-            <option value="Exact Time Known">Exact Time Known</option>
-            <option value="Approximate / Sunrise Default">Approximate / Time Unknown</option>
-          </select>
-        </div>
-        <div>
-          <label>Astrology Standard (Ayanamsa)</label>
-          <select id="kSystem">
-            <option value="Lahiri">Lahiri (North Indian / Chitrapaksha)</option>
-            <option value="KP">KP (Krishnamurti Paddhati - South Indian)</option>
-          </select>
-        </div>
-       <div>
-          <label>Place of Birth (City / Town) *</label>
-          <div style="display:flex; gap:5px;">
-            <input id="kPlace" placeholder="e.g., Thane, Mumbai, Delhi" onblur="lookupCoords()">
-            <button type="button" class="btn btn-sec" onclick="lookupCoords()" title="Fetch Coordinates">📍</button>
-          </div>
-          <small id="geoStatus" style="color:#6E0000; display:block; margin-top:3px;"></small>
-        </div>
-        <div>
-          <label>Detected Latitude / Longitude</label>
-          <div style="display:flex; gap:5px;">
-            <input id="kLat" type="text" placeholder="e.g., 19.22° N">
-            <input id="kLon" type="text" placeholder="e.g., 72.98° E">
-          </div>
-        </div>
-      </div>
+function findField(idName, labelKeyword) {
+  const byId = document.getElementById(idName);
+  if (byId) return byId;
+  const portal = document.getElementById("mainPortal");
+  if (!portal) return null;
+  const labels = portal.querySelectorAll("label");
+  for (let i = 0; i < labels.length; i++) {
+    const txt = (labels[i].textContent || "").toLowerCase();
+    if (txt.indexOf(labelKeyword.toLowerCase()) !== -1) {
+      const next = labels[i].nextElementSibling;
+      if (next && (next.tagName === "INPUT" || next.tagName === "SELECT" || next.tagName === "TEXTAREA")) {
+        return next;
+      }
+      if (labels[i].parentElement) {
+        const inner = labels[i].parentElement.querySelector("input, select, textarea");
+        if (inner) return inner;
+      }
+    }
+  }
+  return null;
+}
 
-      <div id="geoStatus" class="no-print" style="font-size:0.84em; color:#90EE90; margin-top:6px;"></div>
+function getAllFamilyFields() {
+  return {
+    id: findField("mId", "member id"),
+    order: findField("mOrder", "sibling birth order"),
+    gen: findField("mGen", "generation"),
+    branch: findField("mBranch", "lineage branch"),
+    first: findField("mFirst", "first name"),
+    last: findField("mLast", "last name"),
+    father: findField("mFather", "father id"),
+    mother: findField("mMother", "mother id"),
+    siblings: findField("mSiblings", "siblings"),
+    status: findField("mStatus", "status"),
+    dob: findField("mDob", "date of birth"),
+    tob: findField("mTob", "time of birth"),
+    pob: findField("mPob", "birth place"),
+    gotra: findField("mGotra", "gotra"),
+    email: findField("mEmail", "email"),
+    contact: findField("mContact", "contact"),
+    locked: findField("mLocked", "admin verified")
+  };
+}
 
-      <div class="no-print" style="text-align:center; margin-top:14px;">
-        <button type="button" class="btn" style="font-size:1em; padding:10px 22px;" onclick="generateKundli()">✨ Generate Kundli &amp; Yearly Forecast</button>
-        <button type="button" id="btnDownloadPdf" class="btn btn-sec" style="display:none;" onclick="downloadKundliPDF()">📥 Download Free PDF</button>
-        <button type="button" id="btnPrintKundli" class="btn btn-sec" style="display:none;" onclick="printKundliOnly()">🖨️ Print Kundli</button>
-        <button type="button" id="btnPushToFamily" class="btn btn-sec" style="display:none;" onclick="copyKundliToFamilyForm()">➕ Add to Family Ledger</button>
-      </div>
+window.addEventListener("DOMContentLoaded", function() {
+  const fSec = document.getElementById("familySection");
+  if (!fSec) return;
 
-      <!-- Printable / PDF Kundli Preview -->
-      <div id="kundliReport">
-        <div style="text-align:center; border-bottom:2px solid #6E0000; padding-bottom:8px;">
-          <h2 style="margin:0;">🕉️ VEDIC JANMA KUNDLI &amp; PANCHANG REPORT</h2>
-          <p style="margin:4px 0; font-size:0.92em;">Generated via <strong>ManojBhardwaj.in</strong> | Standard: <strong id="repSystem">Lahiri</strong></p>
-        </div>
+  const btns = fSec.querySelectorAll("button");
+  btns.forEach(function(b) {
+    const label = (b.textContent || "").trim();
+    if (label.indexOf("Save Record") !== -1 && !b.getAttribute("onclick")) {
+      b.type = "button";
+      b.addEventListener("click", saveFamilyRecord);
+    } else if (label.indexOf("Clear") !== -1 && !b.getAttribute("onclick")) {
+      b.type = "button";
+      b.addEventListener("click", clearFamilyForm);
+    } else if (label.indexOf("Sign Out of Family Portal") !== -1 && !b.getAttribute("onclick")) {
+      b.type = "button";
+      b.addEventListener("click", signOut);
+    }
+  });
 
-        <table class="k-table" style="margin-top:10px;">
-          <tr><th>Name</th><td id="repName"></td><th>Date &amp; Time</th><td id="repDateTime"></td></tr>
-          <tr><th>Place of Birth</th><td id="repPlace"></td><th>Coordinates</th><td id="repCoords"></td></tr>
-          <tr><th>Time Accuracy</th><td id="repAcc"></td><th>Vikram Samvat</th><td id="repSamvat"></td></tr>
-        </table>
+  const pwdInput = document.getElementById("pwd");
+  if (pwdInput) {
+    pwdInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") unlock();
+    });
+  }
+});
 
-        <div class="k-grid">
-          <div>
-            <h3>📜 Janma Panchang Details</h3>
-            <table class="k-table">
-              <tr><th>Vara (Weekday)</th><td id="repVara"></td></tr>
-              <tr><th>Tithi &amp; Paksha</th><td id="repTithi"></td></tr>
-              <tr><th>Janma Nakshatra &amp; Pada</th><td id="repNakshatra"></td></tr>
-              <tr><th>Yoga</th><td id="repYoga"></td></tr>
-              <tr><th>Karana</th><td id="repKarana"></td></tr>
-              <tr><th>Chandra Rashi (Moon Sign)</th><td id="repRashi"></td></tr>
-              <tr><th>Surya Rashi (Sun Sign)</th><td id="repSunSign"></td></tr>
-          <tr><th>Lagna (Ascendant)</th><td id="repLagna"></td></tr>
-            </table>
-          </div>
-          <div>
-            <h3>🔯 Lagna Kundli Chart</h3>
-            <div id="chartContainer"></div>
-            <p style="font-size:0.8em; text-align:center; color:#4A0000;">Formatted in <span id="repChartStyle">North Indian (Diamond)</span> style.</p>
-          </div>
-        </div>
+function unlock() {
+  const uidVal = (document.getElementById("uid").value || "").trim().toLowerCase();
+  const pwdVal = (document.getElementById("pwd").value || "").trim();
+  const errBox = document.getElementById("err");
+  const users = loadCreds();
 
-        <h3 style="margin-top:16px;">🪐 Planetary Positions (Sidereal Graha Sphuta)</h3>
-        <table class="k-table">
-          <thead><tr><th>Graha (Planet)</th><th>Rashi (Sign)</th><th>Degrees</th><th>Nakshatra</th><th>Status</th></tr></thead>
-          <tbody id="repPlanets"></tbody>
-        </table>
+  if (uidVal === users.admin.id.toLowerCase() && pwdVal === users.admin.pass) {
+    currentRole = "ADMIN";
+  } else if (uidVal === users.family.id.toLowerCase() && pwdVal === users.family.pass) {
+    currentRole = "FAMILY";
+  } else {
+    if (errBox) errBox.style.display = "block";
+    return;
+  }
 
-        <div style="margin-top:16px; background:#FFF8DC; border:1px solid #6E0000; padding:12px; border-radius:6px;">
-          <h3 style="margin-top:0; text-align:left; border:none;">📅 Yearly Forecast &amp; Transit Guidance (2026–2027)</h3>
-          <div id="repForecast" style="font-size:10.5pt; line-height:1.5;"></div>
-          <p style="font-size:0.82em; color:#6E0000; margin-bottom:0; margin-top:8px;"><em>Prepared in Lahiri &amp; KP Vedic standards for family reference and review by verified platform astrologers.</em></p>
-        </div>
-      </div>
-    </div>
+  if (errBox) errBox.style.display = "none";
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("mainPortal").style.display = "block";
 
-    <!-- ================= TAB 2: FAMILY LINEAGE PORTAL ================= -->
-    <div id="familySection" style="display:none;">
-      <div id="loginBox" style="max-width:410px; margin:15px auto; background:#380303; border:2px solid #FFD700; border-radius:8px; padding:18px; text-align:center;">
-        <h2>🔐 Family &amp; Admin Login</h2>
-        <p style="font-size:0.85em; color:#FFE8A3;">Log in with <strong>Family</strong> or <strong>Admin</strong> credentials.</p>
-        <label style="text-align:left;">User ID</label>
-        <input id="uid" placeholder="Enter User ID">
-        <label style="text-align:left; margin-top:8px;">Password</label>
-        <input id="pwd" type="password" placeholder="Enter Password">
-        <button class="btn" style="width:100%; margin-top:12px;" onclick="unlock()">🔓 Unlock Family Ledger</button>
-        <p id="err" style="color:#FF8080; display:none; margin-top:8px;">❌ Invalid User ID or Password</p>
-      </div>
+  const badge = document.getElementById("roleBadge");
+  if (badge) {
+    badge.textContent = currentRole;
+    badge.className = currentRole === "ADMIN" ? "badge-admin" : "badge-family";
+  }
 
-      <div id="mainPortal" style="display:none;">
-        <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; background:#380303; padding:10px; border:1px solid #FFD700; border-radius:6px;">
-          <div>Role: <span id="roleBadge" class="badge-admin">FAMILY</span></div>
-          <div>
-            <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
-            <button class="btn" onclick="exportCSV()">📥 Export CSV</button>
-            <button class="btn btn-sec" onclick="changePass()">🔑 Password</button>
-            <button class="btn btn-sec" onclick="signOut()">🔒 Lock</button>
-          </div>
-        </div>
-✍️ Add / Edit Family Member Record
+  const pushBtn = document.getElementById("btnPushToFamily");
+  const reportBox = document.getElementById("kundliReport");
+  if (pushBtn && reportBox && reportBox.style.display === "block") {
+    pushBtn.style.display = "inline-block";
+  }
 
-Member ID (Editable - e.g. M_25)
-Sibling Birth Order (1 = Eldest)
-Generation
-G0_00 (Root)
-G1_00
-G2_00
-G3_00
-G4_00
-G5_00
+  renderFamilyTable();
+}
 
+function signOut() {
+  currentRole = null;
+  const pwdInput = document.getElementById("pwd");
+  if (pwdInput) pwdInput.value = "";
+  document.getElementById("mainPortal").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  const pushBtn = document.getElementById("btnPushToFamily");
+  if (pushBtn) pushBtn.style.display = "none";
+}
 
-Lineage Branch
-Paternal Lineage
-Maternal Lineage
-Root Ancestor
+function changePass() {
+  if (!currentRole) return;
+  const nextPass = prompt("Enter new password for " + currentRole + " (minimum 4 characters):");
+  if (!nextPass || nextPass.trim().length < 4) {
+    alert("Password must be at least 4 characters.");
+    return;
+  }
+  const users = loadCreds();
+  if (currentRole === "ADMIN") users.admin.pass = nextPass.trim();
+  else users.family.pass = nextPass.trim();
+  localStorage.setItem(FAMILY_CREDS_KEY, JSON.stringify(users));
+  alert("✅ Password updated for " + currentRole + ".");
+}
+function saveFamilyRecord() {
+  const f = getAllFamilyFields();
+  const first = f.first ? f.first.value.trim() : "";
+  if (!first) {
+    alert("Please enter First Name.");
+    return;
+  }
 
+  const records = loadRecords();
+  const recId = (f.id && f.id.value.trim()) ? f.id.value.trim() : ("M_" + (records.length + 1));
+  const idx = records.findIndex(function(r) { return r.id === recId; });
 
-First Name *
-Last Name
-Father ID
-Mother ID
-Siblings (IDs)
-StatusAlivePunyaatma
-Date of Birth
-Time of Birth
-Birth Place / Lifespan Note
-Gotra
-Email ID
-Contact No
- 🛡️ Admin Verified & Locked
-Locks row from family edits.
+  if (idx >= 0 && records[idx].locked && currentRole !== "ADMIN") {
+    alert("🛡️ This record is Admin Verified & Locked. Only Admin can edit it.");
+    return;
+  }
 
+  const entry = {
+    id: recId,
+    order: f.order ? f.order.value.trim() : "1",
+    gen: f.gen ? f.gen.value : "G1_00",
+    branch: f.branch ? f.branch.value : "Paternal Lineage",
+    first: first,
+    last: f.last ? f.last.value.trim() : "",
+    father: f.father ? f.father.value.trim() : "",
+    mother: f.mother ? f.mother.value.trim() : "",
+    siblings: f.siblings ? f.siblings.value.trim() : "",
+    status: f.status ? f.status.value : "Alive",
+    dob: f.dob ? f.dob.value : "",
+    tob: f.tob ? f.tob.value : "",
+    pob: f.pob ? f.pob.value.trim() : "",
+    gotra: f.gotra ? f.gotra.value.trim() : "",
+    email: f.email ? f.email.value.trim() : "",
+    contact: f.contact ? f.contact.value.trim() : "",
+    locked: (currentRole === "ADMIN" && f.locked) ? Boolean(f.locked.checked) : (idx >= 0 ? records[idx].locked : false)
+  };
 
+  if (idx >= 0) records[idx] = entry;
+  else records.push(entry);
 
-✅ Save Record
-🧹 Clear
+  saveRecords(records);
+  clearFamilyForm();
+  renderFamilyTable();
+  alert("✅ Saved record for " + entry.first + " (" + entry.id + ")");
+}
 
+function clearFamilyForm() {
+  const f = getAllFamilyFields();
+  Object.keys(f).forEach(function(k) {
+    const el = f[k];
+    if (!el) return;
+    if (el.type === "checkbox") el.checked = false;
+    else if (el.tagName === "SELECT") el.selectedIndex = 0;
+    else el.value = "";
+  });
+}
 
-ID	Order	Name	Lineage	Father	DOB	Place / Notes	Contact	Action
+function renderFamilyTable() {
+  const tbody = document.querySelector("#mainPortal tbody");
+  if (!tbody) return;
+  const records = loadRecords();
+  tbody.innerHTML = "";
 
-🚪 Sign Out of Family Portal        
- <script src="kundli.js?v=12"></script>
-</body>
-</html>     
+  records.forEach(function(r) {
+    const lockTag = r.locked ? " 🛡️" : "";
+    const placeInfo = new Array(r.pob, r.tob, r.status, r.gotra).filter(Boolean).join(" | ");
+    const contactInfo = new Array(r.contact, r.email).filter(Boolean).join(" / ");
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td><strong>" + r.id + "</strong>" + lockTag + "</td>" +
+      "<td>" + (r.order || "-") + "</td>" +
+      "<td>" + r.first + " " + r.last + "</td>" +
+      "<td>" + r.branch + " (" + r.gen + ")</td>" +
+      "<td>" + (r.father || "-") + "</td>" +
+      "<td>" + (r.dob || "-") + "</td>" +
+      "<td>" + (placeInfo || "-") + "</td>" +
+      "<td>" + (contactInfo || "-") + "</td>" +
+      "<td><button type='button' class='btn btn-sec' onclick='editFamilyRecord(\"" + r.id + "\")'>✏️</button> " +
+      "<button type='button' class='btn btn-sec' onclick='deleteFamilyRecord(\"" + r.id + "\")'>🗑️</button></td>";
+    tbody.appendChild(tr);
+  });
+}
 
+function editFamilyRecord(id) {
+  const records = loadRecords();
+  const r = records.find(function(item) { return item.id === id; });
+  if (!r) return;
+  if (r.locked && currentRole !== "ADMIN") {
+    alert("🛡️ This record is Admin Verified & Locked.");
+    return;
+  }
+  const f = getAllFamilyFields();
+  if (f.id) f.id.value = r.id;
+  if (f.order) f.order.value = r.order;
+  if (f.gen) f.gen.value = r.gen;
+  if (f.branch) f.branch.value = r.branch;
+  if (f.first) f.first.value = r.first;
+  if (f.last) f.last.value = r.last;
+  if (f.father) f.father.value = r.father;
+  if (f.mother) f.mother.value = r.mother;
+  if (f.siblings) f.siblings.value = r.siblings;
+  if (f.status) f.status.value = r.status;
+  if (f.dob) f.dob.value = r.dob;
+  if (f.tob) f.tob.value = r.tob;
+  if (f.pob) f.pob.value = r.pob;
+  if (f.gotra) f.gotra.value = r.gotra;
+  if (f.email) f.email.value = r.email;
+  if (f.contact) f.contact.value = r.contact;
+  if (f.locked) f.locked.checked = Boolean(r.locked);
+}
 
+function deleteFamilyRecord(id) {
+  const records = loadRecords();
+  const r = records.find(function(item) { return item.id === id; });
+  if (!r) return;
+  if (r.locked && currentRole !== "ADMIN") {
+    alert("🛡️ Only Admin can delete a locked record.");
+    return;
+  }
+  if (!confirm("Delete record " + id + " (" + r.first + ")?")) return;
+  saveRecords(records.filter(function(item) { return item.id !== id; }));
+  renderFamilyTable();
+}
+
+function exportCSV() {
+  const records = loadRecords();
+  if (!records.length) {
+    alert("No family records to export yet.");
+    return;
+  }
+  const headers = new Array("ID", "Order", "Generation", "Branch", "First Name", "Last Name", "Father ID", "Mother ID", "Siblings", "Status", "DOB", "TOB", "Place/Notes", "Gotra", "Email", "Contact", "Locked");
+  const rows = new Array(headers.join(","));
+  records.forEach(function(r) {
+    const vals = new Array(r.id, r.order, r.gen, r.branch, r.first, r.last, r.father, r.mother, r.siblings, r.status, r.dob, r.tob, r.pob, r.gotra, r.email, r.contact, r.locked ? "Yes" : "No");
+    rows.push(vals.map(function(v) { return '"' + String(v || "").replace(/"/g, '""') + '"'; }).join(","));
+  });
+  const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "ManojBhardwaj_Family_Ledger.csv";
+  link.click();
+}
+ 
