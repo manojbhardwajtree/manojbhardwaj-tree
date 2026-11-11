@@ -81,7 +81,7 @@
        <div>
           <label>Place of Birth (City / Town) *</label>
           <div style="display:flex; gap:5px;">
-            <input id="kPlace" placeholder="e.g., Thane, Mumbai, Delhi" onblur="lookupCoords()">
+         <input id="kPlace" placeholder="e.g., Thane, Maharashtra or London, UK" oninput="lookupCoords()" onblur="lookupCoords()">
             <button type="button" class="btn btn-sec" onclick="lookupCoords()" title="Fetch Coordinates">📍</button>
           </div>
           <small id="geoStatus" style="color:#6E0000; display:block; margin-top:3px;"></small>
