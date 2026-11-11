@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ManojBhardwaj.in - Private Family Portal</title>
+    <title>ManojBhardwaj.in - Private Family Lineage & Kundli Registry</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -12,13 +12,10 @@
             margin: 0;
             padding: 20px;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .box {
-            width: 100%;
+        .login-box {
             max-width: 450px;
+            margin: 60px auto;
             background: rgba(15, 5, 5, 0.96);
             border: 4px solid #FFD700;
             box-shadow: 0 0 30px #FF4500;
@@ -26,130 +23,475 @@
             padding: 30px;
             text-align: center;
         }
-        h1 { color: #FFD700; margin-bottom: 5px; font-size: 1.8em; }
-        .sub { color: #FFA500; font-weight: bold; margin-bottom: 20px; font-size: 0.95em; }
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; color: #FFD700; font-weight: bold; margin-bottom: 5px; }
-        input {
-            width: 94%;
-            padding: 10px;
-            background: #110000;
-            border: 2px solid #FFA500;
-            color: #FFD700;
-            font-size: 1em;
-            border-radius: 5px;
+        .portal-container {
+            display: none;
+            max-width: 1260px;
+            margin: 0 auto;
+            background: rgba(15, 5, 5, 0.96);
+            border: 5px solid #FFD700;
+            box-shadow: 0 0 30px #FF4500;
+            border-radius: 14px;
+            padding: 25px;
         }
+        h1 { color: #FFD700; text-align: center; margin-bottom: 5px; text-transform: uppercase; }
+        .sub { color: #FFA500; text-align: center; font-weight: bold; margin-bottom: 20px; }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #220202;
+            padding: 10px 15px;
+            border: 1px solid #FFD700;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .form-section {
+            background: #220202;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 14px;
+        }
+        label { display: block; color: #FFA500; font-weight: bold; margin-bottom: 4px; font-size: 0.86em; }
+        .input-field {
+            width: 94%;
+            padding: 8px;
+            background: #110000;
+            border: 1px solid #FFA500;
+            color: #FFD700;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 0.93em;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+        .read-only { background: #330000; color: #FFA500; cursor: not-allowed; }
+        .btn-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
         .btn {
-            width: 100%;
+            flex: 1;
             padding: 12px;
             background: linear-gradient(to bottom, #FFD700, #FFA500);
             color: #550000;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1.05em;
             border: 2px solid #FF4500;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px;
             text-transform: uppercase;
         }
         .btn:hover { background: #FF4500; color: #FFF; }
+        .btn-clear { background: #441111; color: #FFD700; border: 2px solid #FFA500; }
         .btn-small {
             background: #330000;
             color: #FFD700;
             border: 1px solid #FFD700;
-            padding: 6px 12px;
+            padding: 7px 12px;
             cursor: pointer;
             border-radius: 4px;
-            margin-top: 15px;
+            font-weight: bold;
         }
+        .btn-small:hover { background: #FFD700; color: #000; }
+        .ledger-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.82em; }
+        .ledger-table th {
+            background: linear-gradient(to bottom, #FF4500, #990000);
+            color: #FFF;
+            padding: 8px;
+            border: 1px solid #FFD700;
+            text-align: left;
+        }
+        .ledger-table td { padding: 6px; border: 1px solid #551111; text-align: left; }
         .error { color: #FF5555; font-weight: bold; margin-top: 10px; display: none; }
-        .success { color: #55FF55; font-weight: bold; margin-top: 10px; display: none; }
-        #portalSection, #changePassBox { display: none; }
+        #changePassBox { display: none; background: #1a0000; padding: 15px; border: 1px dashed #FFD700; margin-bottom: 20px; border-radius: 6px; }
+        @media print {
+            body { background: #FFF !important; color: #000 !important; padding: 0 !important; }
+            .portal-container { border: none !important; box-shadow: none !important; background: #FFF !important; max-width: 100% !important; }
+            .no-print { display: none !important; }
+            .form-section { border: 1px solid #000 !important; background: #FFF !important; }
+            .ledger-table th { background: #EEE !important; color: #000 !important; border: 1px solid #000 !important; }
+            .ledger-table td { color: #000 !important; border: 1px solid #000 !important; }
+            h1, .sub, h3 { color: #000 !important; }
+        }
     </style>
 </head>
 <body>
 
-<div class="box">
+<div id="loginSection" class="login-box">
     <h1>🕉️ ManojBhardwaj.in 🕉️</h1>
     <div class="sub">Restricted Family Lineage & Kundli Registry</div>
-
-    <!-- LOGIN GATE -->
-    <div id="loginSection">
-        <div class="input-group">
-            <label>Family Member User ID:</label>
-            <input type="text" id="userIdInput" placeholder="Enter User ID">
-        </div>
-        <div class="input-group">
-            <label>Password:</label>
-            <input type="password" id="passInput" placeholder="Enter Password">
-        </div>
-        <button class="btn" onclick="attemptLogin()">Unlock Family Portal</button>
-        <div id="loginError" class="error">Invalid User ID or Password.</div>
+    <div style="text-align:left; margin-bottom:12px;">
+        <label>Family Member User ID:</label>
+        <input type="text" id="userIdInput" class="input-field" placeholder="Enter User ID">
     </div>
-
-    <!-- PROTECTED AREA (PROOF OF ACCESS + PASSWORD CHANGE) -->
-    <div id="portalSection">
-        <h2 style="color:#55FF55;">✅ Access Granted</h2>
-        <p>Welcome, Family Member. Your private registry is now unlocked and hidden from the public.</p>
-        
-        <button class="btn-small" onclick="toggleChangePass()">🔑 Change My Password</button>
-        <button class="btn-small" onclick="logout()">🔒 Lock & Logout</button>
-
-        <div id="changePassBox" style="margin-top: 20px; border-top: 1px dashed #FFD700; padding-top: 15px;">
-            <div class="input-group">
-                <label>Enter New Password:</label>
-                <input type="password" id="newPassInput" placeholder="Type new password">
-            </div>
-            <button class="btn" onclick="saveNewPassword()">Save New Password</button>
-            <div id="passSuccess" class="success">Password updated successfully!</div>
-        </div>
+    <div style="text-align:left; margin-bottom:15px;">
+        <label>Password:</label>
+        <input type="password" id="passInput" class="input-field" placeholder="Enter Password">
     </div>
+    <button class="btn" style="width:100%;" onclick="attemptLogin()">Unlock Family Portal</button>
+    <div id="loginError" class="error">Invalid User ID or Password.</div>
 </div>
 
-<script>
-    const VALID_USER = "bhardwaj";
-    if (!localStorage.getItem("bhardwaj_portal_pass")) {
-        localStorage.setItem("bhardwaj_portal_pass", "family108");
-    }
+<div id="portalSection" class="portal-container">
+    <h1>🕉️ ManojBhardwaj.in 🕉️</h1>
+    <div class="sub">Family Tree Database & Kundli Panchang Registry (1786 Baseline & Sequential Dates Synced)</div>
 
-    function attemptLogin() {
-        const enteredUser = document.getElementById("userIdInput").value.trim().toLowerCase();
-        const enteredPass = document.getElementById("passInput").value;
-        const savedPass = localStorage.getItem("bhardwaj_portal_pass");
+    <div class="top-bar no-print">
+        <span style="color:#55FF55; font-weight:bold;">● Private Session Active</span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-small" onclick="window.print()">🖨️ Print / Save PDF</button>
+            <button class="btn-small" onclick="toggleChangePass()">🔑 Change Password</button>
+            <button class="btn-small" onclick="logout()">🔒 Lock & Logout</button>
+        </div>
+    </div>
 
-        if (enteredUser === VALID_USER && enteredPass === savedPass) {
-            document.getElementById("loginSection").style.display = "none";
-            document.getElementById("loginError").style.display = "none";
-            document.getElementById("portalSection").style.display = "block";
-        } else {
-            document.getElementById("loginError").style.display = "block";
-        }
-    }
+    <div id="changePassBox" class="no-print">
+        <label>Set New Family Password:</label>
+        <div style="display:flex; gap:10px; margin-top:8px;">
+            <input type="password" id="newPassInput" class="input-field" style="max-width:300px;" placeholder="Enter new password (min 4 chars)">
+            <button class="btn-small" onclick="saveNewPassword()">Save Password</button>
+        </div>
+    </div>
 
-    function toggleChangePass() {
-        const box = document.getElementById("changePassBox");
-        box.style.display = box.style.display === "none" ? "block" : "none";
-    }
+    <div class="form-section no-print">
+        <h3 style="color:#FFD700; margin-top:0;">Add / Update Family Record (Paternal / Maternal & Sibling Linking)</h3>
+        <form id="familyForm" onsubmit="saveMemberRecord(event)">
+            <div class="grid-form">
+                <div>
+                    <label>Col A - Sheet Row ID (Auto):</label>
+                    <input type="text" id="rowId" class="input-field read-only" readonly>
+                </div>
+                <div>
+                    <label>Col B - Member Node ID (Auto):</label>
+                    <input type="text" id="memberId" class="input-field read-only" readonly>
+                </div>
+                <div>
+                    <label>Col C - Generation_Name_Node_ID:</label>
+                    <select id="genSelect" class="input-field">
+                        <option value="G1_00">G1_00</option>
+                        <option value="G1_01">G1_01</option>
+                        <option value="G2_00">G2_00</option>
+                        <option value="G3_00" selected>G3_00</option>
+                        <option value="G4_00">G4_00</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Col D - Lineage Branch Status:</label>
+                    <select id="lineageSelect" class="input-field">
+                        <option value="Paternal Lineage">Paternal Lineage (Father Side)</option>
+                        <option value="Maternal Lineage">Maternal Lineage (Mother Side)</option>
+                        <option value="Root Ancestor">Root Ancestor</option>
+                        <option value="Spouse">Spouse</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Col E - Members First Name:</label>
+                    <input type="text" id="firstName" class="input-field" required placeholder="First Name">
+                </div>
+                <div>
+                    <label>Col F - Members Last Name:</label>
+                    <input type="text" id="lastName" class="input-field" value="Mehta" placeholder="Last Name">
+                </div>
+                <div>
+                    <label>Col G - Father_ID (Paternal Link):</label>
+                    <select id="fatherSelect" class="input-field"></select>
+                </div>
+                <div>
+                    <label>Col H - Spouse / Mother Name:</label>
+                    <input type="text" id="spouseName" class="input-field" placeholder="Spouse or Mother Name">
+                </div>
+                <div>
+                    <label>Col I - Spouse / Mother ID (Maternal Link):</label>
+                    <select id="spouseMotherIdSelect" class="input-field"></select>
+                </div>
+                <div>
+                    <label>Col J - Sibling / Child Name:</label>
+                    <input type="text" id="siblingName" class="input-field" placeholder="Sibling or Child Name">
+                </div>
+                <div>
+                    <label>Col K - Sibling / Child ID:</label>
+                    <select id="siblingIdSelect" class="input-field"></select>
+                </div>
+                <div>
+              Col L - Living / Punyaatma:
+Alive
+Punyaatma
 
-    function saveNewPassword() {
-        const newPass = document.getElementById("newPassInput").value.trim();
-        if (newPass.length < 4) {
-            alert("Please enter a password with at least 4 characters.");
-            return;
-        }
-        localStorage.setItem("bhardwaj_portal_pass", newPass);
-        document.getElementById("newPassInput").value = "";
-        document.getElementById("passSuccess").style.display = "block";
-    }
 
-    function logout() {
-        document.getElementById("userIdInput").value = "";
-        document.getElementById("passInput").value = "";
-        document.getElementById("portalSection").style.display = "none";
-        document.getElementById("changePassBox").style.display = "none";
-        document.getElementById("loginSection").style.display = "block";
-    }
-</script>
+Col M - Birth Date (Calendar Picker):
+Col N - Birth Time:
+Col O - Birth Place / Lifespan Note:
+Col P - Gotra_:
+Col T/U - Rashi & Lord:
+-- Select Rashi --
+Mesh (Aries) / Mars
+Vrishabh (Taurus) / Venus
+Mithun (Gemini) / Mercury
+Kark (Cancer) / Moon
+Simha (Leo) / Sun
+Kanya (Virgo) / Mercury
+Tula (Libra) / Venus
+Vrishchik (Scorpio) / Mars
+Dhanu (Sagittarius) / Jupiter
+Makar (Capricorn) / Saturn
+Kumbh (Aquarius) / Saturn
+Meen (Pisces) / Jupiter
 
-</body>
-</html>
+
+Col V - Nakshatra:
+Col W - Vikram Samvat:
+Col X - Contact No:
+Col Y - Email ID:
+Col Z - Member Photo Link:
+✅ Save & Sync to Ledger
+🧹 Clear / Erase Form
+
+
+Stored Family Records: 38
+
+🖨️ Print / Download PDF
+📥 Download CSV (Cols A–AA)
+⚠️ Reset to 1786 Baseline
+
+
+
+Row / Node	Full Name	Lineage	Father ID	Spouse/Mother ID	DOB & Time	Lifespan / Place	Col AA Validation	Actions
+
+const VALID_USER = "bhardwaj";
+let editingIndex = -1;
+if (!localStorage.getItem("bhardwaj_portal_pass")) {
+localStorage.setItem("bhardwaj_portal_pass", "family108");
+}
+const pdfBaseline = [
+{ rowId: "M_06", id: "M_00", gen: "G1_00", lineage: "Root Ancestor", first: "Shiv Dayal", last: "Mehta", father: "Root", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1786-01-15", tob: "08:45", pob: "Est. Lifespan ~82 yrs (1786-1868)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1842", phone: "", email: "", photo: "" },
+{ rowId: "M_07", id: "M_01", gen: "G1_01", lineage: "Paternal Lineage", first: "Radha Krishan", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1814-03-10", tob: "08:45", pob: "Est. Lifespan ~80 yrs (1814-1894)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1870", phone: "", email: "", photo: "" },
+{ rowId: "M_08", id: "M_02", gen: "G1_00", lineage: "Paternal Lineage", first: "Thakur Das", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1817-05-12", tob: "08:45", pob: "Est. Lifespan ~79 yrs (1817-1896)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1874", phone: "", email: "", photo: "" },
+{ rowId: "M_09", id: "M_03", gen: "G1_00", lineage: "Paternal Lineage", first: "Uttam Chand", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1820-07-18", tob: "08:45", pob: "Est. Lifespan ~81 yrs (1820-1901)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1877", phone: "", email: "", photo: "" },
+{ rowId: "M_10", id: "M_04", gen: "G1_00", lineage: "Paternal Lineage", first: "Lalchand", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1823-09-22", tob: "08:45", pob: "Est. Lifespan ~84 yrs (1823-1907)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1880", phone: "", email: "", photo: "" },
+{ rowId: "M_11", id: "M_05", gen: "G1_00", lineage: "Paternal Lineage", first: "Manohar Lal", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1826-02-14", tob: "08:45", pob: "Est. Lifespan ~78 yrs (1826-1904)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1882", phone: "", email: "", photo: "" },
+{ rowId: "M_12", id: "M_06", gen: "G1_00", lineage: "Paternal Lineage", first: "Harbanslal", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1829-04-19", tob: "08:45", pob: "Est. Lifespan ~80 yrs (1829-1909)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1886", phone: "", email: "", photo: "" },
+{ rowId: "M_13", id: "M_07", gen: "G1_00", lineage: "Maternal Lineage", first: "Kaushalya", last: "Vijra", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1832-08-25", tob: "08:45", pob: "Est. Lifespan ~77 yrs (1832-1909)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1889", phone: "", email: "", photo: "" },
+{ rowId: "M_14", id: "M_08", gen: "G1_00", lineage: "Paternal Lineage", first: "Amar Nath", last: "Mehta", father: "M_00", spouse: "To Be Updated", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1835-11-30", tob: "08:45", pob: "Est. Lifespan ~83 yrs (1835-1918)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1892", phone: "", email: "", photo: "" },
+{ rowId: "M_15", id: "M_09", gen: "G1_00", lineage: "Paternal Lineage", first: "Brij Mohan", last: "Mehta", father: "M_01", spouse: "Nirmala Mehta", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1842-02-10", tob: "08:45", pob: "Est. Lifespan ~80 yrs (1842-1922)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1898", phone: "", email: "", photo: "" },
+{ rowId: "M_16", id: "M_10", gen: "G1_00", lineage: "Paternal Lineage", first: "Harbanslal", last: "Mehta", father: "M_01", spouse: "Pending", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1845-04-15", tob: "08:45", pob: "Est. Lifespan ~78 yrs (1845-1923)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1902", phone: "", email: "", photo: "" },
+{ rowId: "M_17", id: "M_11", gen: "G1_00", lineage: "Paternal Lineage", first: "Kulbhushan", last: "Mehta", father: "M_01", spouse: "Krishna Mehta", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1848-06-20", tob: "08:45", pob: "Est. Lifespan ~84 yrs (1848-1932)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1905", phone: "", email: "", photo: "" },
+{ rowId: "M_18", id: "M_12", gen: "G1_00", lineage: "Paternal Lineage", first: "Virendra", last: "Mehta", father: "M_01", spouse: "Sudesh Mehta", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1851-08-24", tob: "08:45", pob: "Est. Lifespan ~81 yrs (1851-1932)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1908", phone: "", email: "", photo: "" },
+{ rowId: "M_19", id: "M_13", gen: "G1_00", lineage: "Maternal Lineage", first: "Praveen", last: "Vijra", father: "M_01", spouse: "Shyam Paul", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1854-10-12", tob: "08:45", pob: "Est. Lifespan ~79 yrs (1854-1933)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1911", phone: "", email: "", photo: "" },
+{ rowId: "M_20", id: "M_14", gen: "G1_00", lineage: "Maternal Lineage", first: "Meena", last: "Paul", father: "M_01", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Punyaatma", dob: "1857-01-18", tob: "08:45", pob: "Est. Lifespan ~80 yrs (1857-1937)", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1913", phone: "", email: "", photo: "" },
+{ rowId: "H-21", id: "M_15", gen: "G1_00", lineage: "Paternal Lineage", first: "Iqbal Krishan", last: "Mehta", father: "M_01", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "1860-03-22", tob: "08:45", pob: "Est. Lifespan ~82 yrs", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1917", phone: "", email: "", photo: "" },
+{ rowId: "M_22", id: "M_16", gen: "G1_00", lineage: "Paternal Lineage", first: "Kewal Krishan", last: "Mehta", father: "M_01", spouse: "Usha Mehta", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "1965-01-01", tob: "08:45", pob: "Haryana", gotra: "Bhardwaj", rashi: "Vrishchik (Scorpio) / Mars", nakshatra: "", vs: "VS 2020", phone: "", email: "", photo: "" },
+{ rowId: "M_23", id: "M_17", gen: "G1_00", lineage: "Maternal Lineage", first: "Reeta", last: "Pal", father: "M_01", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "1866-07-14", tob: "08:45", pob: "Est. Lifespan ~78 yrs", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1923", phone: "", email: "", photo: "" },
+{ rowId: "M_24", id: "M_18", gen: "G1_00", lineage: "Maternal Lineage", first: "Renu", last: "Batra", father: "M_01", spouse: "Jagdish Batra", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "1869-09-28", tob: "08:45", pob: "Est. Lifespan ~80 yrs", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "VS 1926", phone: "", email: "", photo: "" },
+{ rowId: "M_28", id: "M_22", gen: "G1_00", lineage: "Paternal Lineage", first: "Sunil", last: "Mehta", father: "M_11", spouse: "Sunita Mehta", spouseId: "", siblingName: "Seema, Satish, Manoj, Sanjay", siblingId: "M_23, M_24, M_25, M_26", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_29", id: "M_23", gen: "G1_00", lineage: "Paternal Lineage", first: "Seema", last: "Mehta", father: "M_11", spouse: "Kailash Nath", spouseId: "", siblingName: "Sunil, Satish, Manoj, Sanjay", siblingId: "M_22, M_24, M_25, M_26", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_30", id: "M_24", gen: "G1_00", lineage: "Paternal Lineage", first: "Satish", last: "Mehta", father: "M_11", spouse: "Vijaya Raje Mehta", spouseId: "", siblingName: "Sunil, Seema, Manoj, Sanjay", siblingId: "M_22, M_23, M_25, M_26", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_31", id: "M_25", gen: "G1_00", lineage: "Paternal Lineage", first: "Manoj", last: "Mehta", father: "M_11", spouse: "N/A", spouseId: "", siblingName: "Sunil, Seema, Satish, Sanjay", siblingId: "M_22, M_23, M_24, M_26", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_32", id: "M_26", gen: "G1_00", lineage: "Paternal Lineage", first: "Sanjay", last: "Mehta", father: "M_11", spouse: "Sushma Mehta", spouseId: "", siblingName: "Sunil, Seema, Satish, Manoj", siblingId: "M_22, M_23, M_24, M_25", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_33", id: "M_27", gen: "G1_00", lineage: "Paternal Lineage", first: "Kuldeep", last: "Mehta", father: "M_12", spouse: "", spouseId: "", siblingName: "Pradeep Mehta", siblingId: "M_28", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_34", id: "M_28", gen: "G1_00", lineage: "Paternal Lineage", first: "Pradeep", last: "Mehta", father: "M_12", spouse: "", spouseId: "", siblingName: "Kuldeep Mehta", siblingId: "M_27", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_35", id: "M_29", gen: "G1_00", lineage: "Maternal Lineage", first: "Manju", last: "Sharma", father: "", spouse: "", spouseId: "M_13", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_36", id: "M_30", gen: "G1_00", lineage: "Maternal Lineage", first: "Sonu", last: "Vijra", father: "", spouse: "", spouseId: "M_14", siblingName: "Anamika", siblingId: "M_31", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_37", id: "M_31", gen: "G1_00", lineage: "Maternal Lineage", first: "Anamika", last: "", father: "", spouse: "", spouseId: "M_14", siblingName: "Sonu Vijra", siblingId: "M_30", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_38", id: "M_32", gen: "G1_00", lineage: "Paternal Lineage", first: "Rakesh", last: "Mehta", father: "M_15", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_39", id: "M_33", gen: "G1_00", lineage: "Paternal Lineage", first: "Neelu", last: "Kaushal", father: "M_16", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_40", id: "M_34", gen: "G1_00", lineage: "Maternal Lineage", first: "Varun", last: "Mehta", father: "", spouse: "", spouseId: "M_17", siblingName: "", siblingId: "M_35", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_41", id: "M_35", gen: "G1_00", lineage: "Maternal Lineage", first: "", last: "Mehta", father: "", spouse: "", spouseId: "M_17", siblingName: "Varun Mehta", siblingId: "M_34", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_42", id: "M_36", gen: "G1_00", lineage: "Maternal Lineage", first: "Vinny", last: "Mehta", father: "", spouse: "", spouseId: "M_18", siblingName: "Prateek Batra", siblingId: "M_37", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_43", id: "M_37", gen: "G1_00", lineage: "Maternal Lineage", first: "Prateek", last: "Batra", father: "", spouse: "", spouseId: "M_18", siblingName: "Vinny Mehta", siblingId: "M_36", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_44", id: "M_38", gen: "G1_00", lineage: "Paternal Lineage", first: "Zoya", last: "Gupta", father: "M_19", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_45", id: "M_39", gen: "G1_00", lineage: "Paternal Lineage", first: "Karan", last: "Mehta", father: "M_20", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_46", id: "M_40", gen: "G1_00", lineage: "Paternal Lineage", first: "", last: "Mehta", father: "M_21", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" },
+{ rowId: "M_47", id: "M_41", gen: "G1_00", lineage: "Paternal Lineage", first: "", last: "Mehta", father: "M_22", spouse: "", spouseId: "", siblingName: "", siblingId: "", status: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", rashi: "", nakshatra: "", vs: "", phone: "", email: "", photo: "" }
+];
+function getRecords() {
+const stored = localStorage.getItem("bhardwaj_1786_seq_v1");
+if (!stored) {
+localStorage.setItem("bhardwaj_1786_seq_v1", JSON.stringify(pdfBaseline));
+return pdfBaseline;
+}
+return JSON.parse(stored);
+}
+function attemptLogin() {
+const u = document.getElementById("userIdInput").value.trim().toLowerCase();
+const p = document.getElementById("passInput").value;
+if (u === VALID_USER && p === localStorage.getItem("bhardwaj_portal_pass")) {
+document.getElementById("loginSection").style.display = "none";
+document.getElementById("portalSection").style.display = "block";
+renderAll();
+} else {
+document.getElementById("loginError").style.display = "block";
+}
+}
+function toggleChangePass() {
+const b = document.getElementById("changePassBox");
+b.style.display = b.style.display === "none" ? "block" : "none";
+}
+function saveNewPassword() {
+const np = document.getElementById("newPassInput").value.trim();
+if (np.length < 4) { alert("Password must be at least 4 characters."); return; }
+localStorage.setItem("bhardwaj_portal_pass", np);
+document.getElementById("newPassInput").value = "";
+document.getElementById("changePassBox").style.display = "none";
+alert("Password updated successfully!");
+}
+function logout() {
+document.getElementById("portalSection").style.display = "none";
+document.getElementById("loginSection").style.display = "block";
+document.getElementById("passInput").value = "";
+}
+function populateMemberDropdown(selectElement, defaultText, list) {
+selectElement.innerHTML = <option value="">${defaultText}</option>;
+list.forEach(m => {
+const fullName = ${m.first} ${m.last}.trim() || "[Missing Name]";
+const opt = document.createElement("option");
+opt.value = m.id;
+opt.text = ${m.id} - ${fullName} (${m.dob ? m.dob.substring(0,4) : m.gen});
+selectElement.appendChild(opt);
+});
+}
+function renderAll() {
+const list = getRecords();
+document.getElementById("recordCountLabel").innerText = "Stored Family Records: " + list.length;
+if (editingIndex === -1) {
+document.getElementById("rowId").value = "M_" + String(list.length + 10).padStart(2, '0');
+document.getElementById("memberId").value = "M_" + String(list.length + 4).padStart(2, '0');
+}
+populateMemberDropdown(document.getElementById("fatherSelect"), "-- None / Maternal Branch --", list);
+populateMemberDropdown(document.getElementById("spouseMotherIdSelect"), "-- None / Paternal Branch --", list);
+populateMemberDropdown(document.getElementById("siblingIdSelect"), "-- Select Sibling / Child ID --", list);
+const tbody = document.getElementById("ledgerBody");
+tbody.innerHTML = "";
+list.forEach((m, idx) => {
+const fullName = ${m.first} ${m.last}.trim();
+let valCheck = "TRUE (All Clear)";
+let valColor = "#55FF55";
+if (!m.first) { valCheck = "FALSE (MISSING NAME)"; valColor = "#FF5555"; }
+else if (!m.dob) { valCheck = "FALSE (MISSING BIRTH DATE)"; valColor = "#FFA500"; }
+const lineageColor = (m.lineage || "").includes("Maternal") ? "#FF99FF" : "#88CCFF";
+const tr = document.createElement("tr");
+tr.innerHTML = `
+\({m.rowId}<br><strong style="color:#FFD700;">\){m.id}
+\({fullName || "<em>[Missing Name]</em>"}<br><small style="color:#AAA;">\){m.status}
+${m.lineage || "-"}
+${m.father || "-"}
+\({m.spouseId || "-"}<br><small style="color:#CCC;">\){m.spouse || ""}
+\({m.dob || "-"}</strong><br><small>\){m.tob || ""}
+${m.pob || "-"}
+${valCheck}
+`;
+tbody.appendChild(tr);
+});
+}
+function saveMemberRecord(e) {
+e.preventDefault();
+const list = getRecords();
+const record = {
+rowId: document.getElementById("rowId").value,
+id: document.getElementById("memberId").value,
+gen: document.getElementById("genSelect").value,
+lineage: document.getElementById("lineageSelect").value,
+first: document.getElementById("firstName").value.trim(),
+last: document.getElementById("lastName").value.trim(),
+father: document.getElementById("fatherSelect").value,
+spouse: document.getElementById("spouseName").value.trim(),
+spouseId: document.getElementById("spouseMotherIdSelect").value,
+siblingName: document.getElementById("siblingName").value.trim(),
+siblingId: document.getElementById("siblingIdSelect").value,
+status: document.getElementById("statusSelect").value,
+dob: document.getElementById("dobInput").value,
+tob: document.getElementById("tobInput").value,
+pob: document.getElementById("pobInput").value.trim(),
+gotra: document.getElementById("gotraInput").value.trim(),
+rashi: document.getElementById("rashiSelect").value,
+nakshatra: document.getElementById("nakshatraInput").value.trim(),
+vs: document.getElementById("vsInput").value.trim(),
+phone: document.getElementById("phoneInput").value.trim(),
+email: document.getElementById("emailInput").value.trim(),
+photo: document.getElementById("photoInput").value.trim()
+};
+if (editingIndex > -1) {
+list[editingIndex] = record;
+editingIndex = -1;
+document.getElementById("submitBtn").innerText = "✅ Save & Sync to Ledger";
+} else {
+list.push(record);
+}
+localStorage.setItem("bhardwaj_1786_seq_v1", JSON.stringify(list));
+clearForm();
+renderAll();
+alert("Record saved cleanly!");
+}
+function editRecord(idx) {
+const m = getRecords()[idx];
+editingIndex = idx;
+document.getElementById("rowId").value = m.rowId || "";
+document.getElementById("memberId").value = m.id;
+document.getElementById("genSelect").value = m.gen || "G1_00";
+document.getElementById("lineageSelect").value = m.lineage || "Paternal Lineage";
+document.getElementById("firstName").value = m.first || "";
+document.getElementById("lastName").value = m.last || "";
+document.getElementById("fatherSelect").value = m.father || "";
+document.getElementById("spouseName").value = m.spouse || "";
+document.getElementById("spouseMotherIdSelect").value = m.spouseId || "";
+document.getElementById("siblingName").value = m.siblingName || "";
+document.getElementById("siblingIdSelect").value = m.siblingId || "";
+document.getElementById("statusSelect").value = m.status || "Alive";
+document.getElementById("dobInput").value = m.dob || "";
+document.getElementById("tobInput").value = m.tob || "";
+document.getElementById("pobInput").value = m.pob || "";
+document.getElementById("gotraInput").value = m.gotra || "Bhardwaj";
+document.getElementById("rashiSelect").value = m.rashi || "";
+document.getElementById("nakshatraInput").value = m.nakshatra || "";
+document.getElementById("vsInput").value = m.vs || "";
+document.getElementById("phoneInput").value = m.phone || "";
+document.getElementById("emailInput").value = m.email || "";
+document.getElementById("photoInput").value = m.photo || "";
+document.getElementById("submitBtn").innerText = "💾 Update Record (" + m.id + ")";
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function deleteRecord(idx) {
+const list = getRecords();
+if (confirm(Erase ${list[idx].id} (${list[idx].first} ${list[idx].last})?)) {
+list.splice(idx, 1);
+localStorage.setItem("bhardwaj_1786_seq_v1", JSON.stringify(list));
+clearForm();
+renderAll();
+}
+}
+function clearForm() {
+editingIndex = -1;
+document.getElementById("familyForm").reset();
+document.getElementById("lastName").value = "Mehta";
+document.getElementById("gotraInput").value = "Bhardwaj";
+document.getElementById("submitBtn").innerText = "✅ Save & Sync to Ledger";
+const list = getRecords();
+document.getElementById("rowId").value = "M_" + String(list.length + 10).padStart(2, '0');
+document.getElementById("memberId").value = "M_" + String(list.length + 4).padStart(2, '0');
+}
+function exportToCSV() {
+const list = getRecords();
+let csv = "ColA_RowID,ColB_MemberID,ColC_GenNodeID,ColD_LineageStatus,ColE_FirstName,ColF_LastName,ColG_FatherID,ColH_SpouseMotherName,ColI_SpouseMotherID,ColJ_SiblingChildName,ColK_SiblingChildID,ColL_LivingStatus,ColM_BirthDate,ColN_BirthTime,ColO_BirthPlace,ColP_Gotra,ColT_RashiLord,ColV_Nakshatra,ColW_VikramSamvat,ColX_ContactNo,ColY_EmailID,ColZ_PhotoLink,ColAA_ValidationCheck\n";
+list.forEach(r => {
+let valCheck = !r.first ? "FALSE (MISSING NAME)" : (!r.dob ? "FALSE (MISSING BIRTH DATE)" : "TRUE (All Clear)");
+csv += "${r.rowId}","${r.id}","${r.gen}","${r.lineage}","${r.first}","${r.last}","${r.father}","${r.spouse}","${r.spouseId}","${r.siblingName}","${r.siblingId}","${r.status}","${r.dob}","${r.tob}","${r.pob}","${r.gotra}","${r.rashi}","${r.nakshatra}","${r.vs}","${r.phone}","${r.email}","${r.photo}","${valCheck}"\n;
+});
+const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+const link = document.createElement("a");
+link.href = URL.createObjectURL(blob);
+link.download = "historyhome_1786_to_present.csv";
+link.click();
+}
+function resetToPdfBaseline() {
+if (confirm("Reset all records back to your 1786-baseline PDF dataset?")) {
+localStorage.removeItem("bhardwaj_1786_seq_v1");
+renderAll();
+}
+}
+      
