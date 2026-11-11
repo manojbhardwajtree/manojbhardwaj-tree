@@ -45,11 +45,12 @@ async function lookupCoords() {
     st.textContent = "✅ Detected: " + raw + " (" + fmtLat(c.at(0)) + ", " + fmtLon(c.at(1)) + ")";
     return;
   }
-  st.textContent = "🔍 Searching coordinates for " + raw + "...";
+ st.textContent = "🔍 Searching coordinates for " + raw + "...";
   try {
-    const r = await fetchhttps://open-meteo.com" + encodeURIComponent(key)+ "&count=1&language=en&format=json");
+    const r = await fetch("https://open-meteo.com" + encodeURIComponent(key) + "&count=1&language=en&format=json");
     const d = await r.json();
     if (d.results && d.results.length > 0) {
+
       const loc = d.results.at(0);
       document.getElementById("kLat").value = fmtLat(Number(loc.latitude));
       document.getElementById("kLon").value = fmtLon(Number(loc.longitude));
