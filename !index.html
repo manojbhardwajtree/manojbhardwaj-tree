@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ManojBhardwaj.in</title>
+<style>
+body { font-family: Arial; background: #7A0000; color: #FFF; padding: 15px; }
+.box { max-width: 1100px; margin: 10px auto; background: #140202; border: 3px solid #FFD700; border-radius: 8px; padding: 15px; }
+h1 { color: #FFD700; text-align: center; }
+input, select { width: 92%; padding: 6px; background: #000; border: 1px solid #FFA500; color: #FFD700; margin-bottom: 8px; }
+.btn { background: #FFD700; color: #500; font-weight: bold; padding: 8px 14px; border: none; cursor: pointer; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.85em; }
+th, td { border: 1px solid #622; padding: 6px; text-align: left; }
+@media print { .no-print { display: none; } body { background: #FFF; color: #000; } }
+</style>
+</head>
+<body>
+<div id="loginBox" class="box" style="max-width:360px; text-align:center;">
+  <h1>🕉️ ManojBhardwaj.in</h1>
+  <p>Private Family Registry</p>
+  <input id="uid" value="bhardwaj" placeholder="User ID">
+  <input id="pwd" type="password" value="family108" placeholder="Password">
+  <button class="btn" style="width:100%;" onclick="unlock()">Unlock Family Portal</button>
+  <p id="err" style="color:#F55; display:none;">Invalid Login</p>
+</div>
+
+<div id="mainPortal" class="box" style="display:none;">
+  <h1>🕉️ ManojBhardwaj.in - Family Ledger</h1>
+  <div class="no-print" style="text-align:right; margin-bottom:10px;">
+    <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
+    <button class="btn" onclick="exportCSV()">📥 CSV</button>
+    <button class="btn" onclick="changePass()">🔑 Password</button>
+    <button class="btn" onclick="location.reload()">🔒 Lock</button>
+  </div>
+<form id="fForm" class="no-print" onsubmit="saveRec(event)">
+    <input id="mId" readonly placeholder="Member ID">
+    <select id="mGen"><option>G1_00</option><option>G2_00</option><option selected>G3_00</option><option>G4_00</option></select>
+    <select id="mLin"><option>Paternal Lineage</option><option>Maternal Lineage</option><option>Root Ancestor</option></select>
+    <input id="mFirst" required placeholder="First Name">
+    <input id="mLast" value="Mehta" placeholder="Last Name">
+    <select id="mFather"></select>
+    <select id="mMother"></select>
+    <select id="mSib"></select>
+    <select id="mStat"><option>Alive</option><option>Punyaatma</option></select>
+    <input id="mDob" type="date">
+    <input id="mTob" type="time">
+    <input id="mPob" placeholder="Birth Place / Lifespan Note">
+    <input id="mGotra" value="Bhardwaj" placeholder="Gotra">
+    <input id="mEmail" type="email" placeholder="Email ID">
+    <input id="mPhone" type="tel" placeholder="Contact No">
+    <button type="submit" class="btn" id="sBtn">✅ Save Record</button>
+    <button type="button" class="btn" onclick="clr()">🧹 Clear</button>
+  </form>
+  <table><thead><tr><th>ID</th><th>Name</th><th>Lineage</th><th>Father</th><th>Mother</th><th>DOB</th><th>Email/Phone</th><th class="no-print">Action</th></tr></thead><tbody id="tBody"></tbody></table>
+</div>
+  <form id="fForm" class="no-print" onsubmit="saveRec(event)">
+    <input id="mId" readonly placeholder="Member ID">
+    <select id="mGen"><option>G1_00</option><option>G2_00</option><option selected>G3_00</option><option>G4_00</option></select>
+    <select id="mLin"><option>Paternal Lineage</option><option>Maternal Lineage</option><option>Root Ancestor</option></select>
+    <input id="mFirst" required placeholder="First Name">
+    <input id="mLast" value="Mehta" placeholder="Last Name">
+    <select id="mFather"></select>
+    <select id="mMother"></select>
+    <select id="mSib"></select>
+    <select id="mStat"><option>Alive</option><option>Punyaatma</option></select>
+    <input id="mDob" type="date">
+    <input id="mTob" type="time">
+    <input id="mPob" placeholder="Birth Place / Lifespan Note">
+    <input id="mGotra" value="Bhardwaj" placeholder="Gotra">
+    <input id="mEmail" type="email" placeholder="Email ID">
+    <input id="mPhone" type="tel" placeholder="Contact No">
+    <button type="submit" class="btn" id="sBtn">✅ Save Record</button>
+    <button type="button" class="btn" onclick="clr()">🧹 Clear</button>
+  </form>
+  <table><thead><tr><th>ID</th><th>Name</th><th>Lineage</th><th>Father</th><th>Mother</th><th>DOB</th><th>Email/Phone</th><th class="no-print">Action</th></tr></thead><tbody id="tBody"></tbody></table>
+</div>
+function unlock() {
+  if (document.getElementById("uid").value.trim().toLowerCase() === "bhardwaj" && document.getElementById("pwd").value === localStorage.getItem("b_pass")) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("mainPortal").style.display = "block";
+    render();
+  } else { document.getElementById("err").style.display = "block"; }
+}
