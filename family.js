@@ -1,4 +1,4 @@
- let currentRole = null;
+let currentRole = null;
 let editIdx = -1;
 
 if (!localStorage.getItem("b_family_pass")) localStorage.setItem("b_family_pass", "family108");
@@ -109,6 +109,87 @@ function render() {
       <td>${r.dob}</td>
       <td>${r.pob}</td>
       <td>${r.email} ${r.phone}</td>
+      const list = getList();
+if (editIdx > -1 && list[editIdx].locked && currentRole !== "admin") {
+alert("This record is verified and locked by Admin.");
+return;
+}
+const obj = {
+id: mId.value.trim(),
+order: parseInt(mOrder.value, 10) || 1,
+gen: mGen.value,
+lin: mLin.value,
+first: mFirst.value.trim(),
+last: mLast.value.trim(),
+father: mFather.value,
+mother: mMother.value,
+sib: mSib.value.trim(),
+stat: mStat.value,
+dob: mDob.value,
+tob: mTob.value,
+pob: mPob.value.trim(),
+gotra: mGotra.value.trim(),
+email: mEmail.value.trim(),
+phone: mPhone.value.trim(),
+locked: currentRole === "admin" ? mLocked.checked : false
+};
+if (editIdx > -1) { list[editIdx] = obj; editIdx = -1; }
+else { list.push(obj); }
+localStorage.setItem("b_db_v6", JSON.stringify(list));
+clr();
+render();
+}
+function ed(i) {
+const r = getList()[i];
+if (r.locked && currentRole !== "admin") {
+alert("Only Admin can edit a verified record.");
+return;
+}
+editIdx = i;
+mId.value = r.id; mOrder.value = r.order || 1; mGen.value = r.gen; mLin.value = r.lin;
+mFirst.value = r.first; mLast.value = r.last; mFather.value = r.father; mMother.value = r.mother;
+mSib.value = r.sib; mStat.value = r.stat; mDob.value = r.dob; mTob.value = r.tob;
+mPob.value = r.pob; mGotra.value = r.gotra; mEmail.value = r.email; mPhone.value = r.phone;
+mLocked.checked = Boolean(r.locked);
+document.getElementById("fForm").scrollIntoView({ behavior: "smooth" });
+}
+function del(i) {
+if (currentRole !== "admin") return;
+if (confirm("Admin Action: Permanently erase this record?")) {
+const list = getList();
+list.splice(i, 1);
+localStorage.setItem("b_db_v6", JSON.stringify(list));
+render();
+}
+}
+function clr() {
+editIdx = -1;
+document.getElementById("fForm").reset();
+mLast.value = "Mehta"; mGotra.value = "Bhardwaj"; mOrder.value = 1; mLocked.checked = false;
+render();
+}
+function changePass() {
+const p = prompt("Enter new password for your current role (min 4 characters):");
+if (p && p.length >= 4) {
+if (currentRole === "admin") localStorage.setItem("b_admin_pass", p);
+else localStorage.setItem("b_family_pass", p);
+alert("Password updated successfully!");
+}
+}
+function exportCSV() {
+let csv = "ID,BirthOrder,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone,AdminLocked\n";
+getList().forEach(r => {
+csv += "${r.id}","${r.order || 1}","${r.gen}","${r.lin}","${r.first}","${r.last}","${r.father}","${r.mother}","${r.sib}","${r.stat}","${r.dob}","${r.tob}","${r.pob}","${r.gotra}","${r.email}","${r.phone}","${r.locked ? 'Yes' : 'No'}"\n;
+});
+const a = document.createElement("a");
+a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+a.download = "historyhome.csv";
+a.click();
+}
+
+<FollowUp>
+Once **`family.js`** is committed inside **`manojbhardwaj-tree`**, let me know and I'll send **File 3 (`kundli.js`)**!
+</FollowUp>
       <td class="no-print">${editBtn} ${delBtn}</td>
     </tr>`;
   });
