@@ -74,6 +74,50 @@ async function lookupCoords() {
   const st = document.getElementById("geoStatus");
   if (!placeEl) return;
   const raw = placeEl.value.trim();
+  if (raw.length < 2) {
+    if (st) st.textContent = "";
+    return;
+  }
+
+  const cityOnly = raw.toLowerCase().split(",").at(0).trim();
+  if (CITIES[cityOnly]) {
+    const c = CITIES[cityOnly];
+    document.getElementById("kLat").value = fmtLat(c.at(0));
+    document.getElementById("kLon").value = fmtLon(c.at(1));
+    if (st) st.textContent = "✅ Detected: " + raw + " (" + fmtLat(c.at(0)) + ", " + fmtLon(c.at(1)) + ")";
+    return;
+  }
+
+  if (st) st.textContent = "🔍 Searching coordinates for " + raw + "...";
+  try {
+    const base = "https://" + "geocoding-api." + "open-meteo.com" + "/v1/search?count=1&language=en&format=json&name=";
+    let r = await fetch(base + encodeURIComponent(raw));
+    let d = r.ok ? await r.json() : null;
+
+    if ((!d || !d.results || d.results.length === 0) && raw.indexOf(",") !== -1) {
+      r = await fetch(base + encodeURIComponent(cityOnly));
+      d = r.ok ? await r.json() : null;
+    }
+
+    if (d && d.results && d.results.length > 0) {
+      const loc = d.results.at(0);
+      const latVal = Number(loc.latitude);
+      const lonVal = Number(loc.longitude);
+      const label = [loc.name, loc.admin1, loc.country].filter(Boolean).join(", ");
+      document.getElementById("kLat").value = fmtLat(latVal);
+      document.getElementById("kLon").value = fmtLon(lonVal);
+      if (st) st.textContent = "✅ Detected: " + label + " (" + fmtLat(latVal) + ", " + fmtLon(lonVal) + ")";
+    } else {
+      if (st) st.textContent = "⚠️ Location not auto-found. Try City + State (e.g., Pune, Maharashtra).";
+    }
+  } catch (e) {
+    if (st) st.textContent = "⚠️ Lookup slow. Enter Lat/Lon manually if needed.";
+  }
+} {
+  const placeEl = document.getElementById("kPlace");
+  const st = document.getElementById("geoStatus");
+  if (!placeEl) return;
+  const raw = placeEl.value.trim();
   if (!raw) return;
 
   const key = raw.toLowerCase().split(",").at(0).trim();
@@ -248,7 +292,8 @@ function buildSouthChart(grahas) {
     cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#6E0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#6E0000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + s.at(i) + '</text>';
   }
   return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#6E0000" stroke-width="2"/>' + cells + '<text x="150" y="154" font-size="12" fill="#6E0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
-}
+} #kPlace
+  
 
 function downloadKundliPDF() {
   if (typeof html2pdf === "undefined") {
@@ -289,4 +334,5 @@ function copyKundliToFamilyForm() {
   }
   const fForm = document.getElementById("fForm");
   if (fForm) fForm.scrollIntoView({ behavior: "smooth" });
-}
+ }
+ 
