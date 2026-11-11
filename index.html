@@ -1,53 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ManojBhardwaj.in - Family Matrix Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManojBhardwaj.in - Private Family Portal</title>
     <style>
-        body { font-family: sans-serif; background: linear-gradient(135deg, #7A0000 0%, #FF4500 100%); color: #FFF; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 800px; margin: 0 auto; background: rgba(15, 5, 5, 0.95); border: 5px solid #FFD700; border-radius: 14px; padding: 30px; box-shadow: 0 0 30px #FF4500; }
-        h1, h2 { color: #FFD700; text-transform: uppercase; }
-        .form-box { background: #220202; border: 2px solid #FFD700; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left; }
-        label { display: block; margin: 10px 0 5px; color: #FFA500; font-weight: bold; }
-        .input-field { width: 95%; padding: 10px; background: #000; border: 1px solid #FFA500; color: #FFD700; font-weight: bold; border-radius: 4px; }
-        .btn { display: block; width: 100%; padding: 15px; margin-top: 20px; background: #FFD700; color: #550000; font-size: 1.2em; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
-        .btn:hover { background: #FFA500; color: #FFF; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #7A0000 0%, #D2143A 50%, #FF4500 100%);
+            color: #FFFFFF;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .box {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(15, 5, 5, 0.96);
+            border: 4px solid #FFD700;
+            box-shadow: 0 0 30px #FF4500;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+        h1 { color: #FFD700; margin-bottom: 5px; font-size: 1.8em; }
+        .sub { color: #FFA500; font-weight: bold; margin-bottom: 20px; font-size: 0.95em; }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; color: #FFD700; font-weight: bold; margin-bottom: 5px; }
+        input {
+            width: 94%;
+            padding: 10px;
+            background: #110000;
+            border: 2px solid #FFA500;
+            color: #FFD700;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to bottom, #FFD700, #FFA500);
+            color: #550000;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: 2px solid #FF4500;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .btn:hover { background: #FF4500; color: #FFF; }
+        .btn-small {
+            background: #330000;
+            color: #FFD700;
+            border: 1px solid #FFD700;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .error { color: #FF5555; font-weight: bold; margin-top: 10px; display: none; }
+        .success { color: #55FF55; font-weight: bold; margin-top: 10px; display: none; }
+        #portalSection, #changePassBox { display: none; }
     </style>
 </head>
 <body>
-<div class="container">
+
+<div class="box">
     <h1>🕉️ ManojBhardwaj.in 🕉️</h1>
-    <h2>Family Tree & Matrix Registry</h2>
-    <hr style="border-color: #FFD700;">
-    
-    <div class="form-box">
-        <label>Active Member ID:</label>
-        <input type="text" class="input-field" value="M_24" readonly style="background:#330000; color:#FFA500; cursor:not-allowed;">
-        
-        <label>Select Generation Filter:</label>
-        <select class="input-field">
-            <option>Generation 3 (G3 - Ancestors Dropdown)</option>
-            <option>Generation 4 (G4)</option>
-            <option>Generation 5 (G5)</option>
-        </select>
-        
-        <label>Full Legal Name:</label>
-        <input type="text" class="input-field" placeholder="Enter family member name">
-        
-        <label>Select Father / Ascendant Connection:</label>
-        <select class="input-field">
-            <option>Shiv Dayal Mehta (M_00)</option>
-            <option>Ram Chand Mehta (M_01)</option>
-            <option>Manoj Mehta (M_22)</option>
-            <option>Sanjay Mehta (M_23)</option>
-        </select>
-        
-        <button class="btn" onclick="alert('Record synced successfully to cloud matrix!')">Sync Record to Family Ledger</button>
+    <div class="sub">Restricted Family Lineage & Kundli Registry</div>
+
+    <!-- LOGIN GATE -->
+    <div id="loginSection">
+        <div class="input-group">
+            <label>Family Member User ID:</label>
+            <input type="text" id="userIdInput" placeholder="Enter User ID">
+        </div>
+        <div class="input-group">
+            <label>Password:</label>
+            <input type="password" id="passInput" placeholder="Enter Password">
+        </div>
+        <button class="btn" onclick="attemptLogin()">Unlock Family Portal</button>
+        <div id="loginError" class="error">Invalid User ID or Password.</div>
     </div>
-    
-    <div style="margin-top: 20px; font-weight: bold; color: #FFD700;">
-        <p>Total records currently stored: 24</p>
-        <button style="padding: 10px; margin: 5px; background:#444; color:#FFD700; border:1px solid #FFD700; cursor:pointer;" onclick="alert('Downloading matrix...')">📥 Download Data for historyhome.odf</button>
+
+    <!-- PROTECTED AREA (PROOF OF ACCESS + PASSWORD CHANGE) -->
+    <div id="portalSection">
+        <h2 style="color:#55FF55;">✅ Access Granted</h2>
+        <p>Welcome, Family Member. Your private registry is now unlocked and hidden from the public.</p>
+        
+        <button class="btn-small" onclick="toggleChangePass()">🔑 Change My Password</button>
+        <button class="btn-small" onclick="logout()">🔒 Lock & Logout</button>
+
+        <div id="changePassBox" style="margin-top: 20px; border-top: 1px dashed #FFD700; padding-top: 15px;">
+            <div class="input-group">
+                <label>Enter New Password:</label>
+                <input type="password" id="newPassInput" placeholder="Type new password">
+            </div>
+            <button class="btn" onclick="saveNewPassword()">Save New Password</button>
+            <div id="passSuccess" class="success">Password updated successfully!</div>
+        </div>
     </div>
 </div>
+
+<script>
+    const VALID_USER = "bhardwaj";
+    if (!localStorage.getItem("bhardwaj_portal_pass")) {
+        localStorage.setItem("bhardwaj_portal_pass", "family108");
+    }
+
+    function attemptLogin() {
+        const enteredUser = document.getElementById("userIdInput").value.trim().toLowerCase();
+        const enteredPass = document.getElementById("passInput").value;
+        const savedPass = localStorage.getItem("bhardwaj_portal_pass");
+
+        if (enteredUser === VALID_USER && enteredPass === savedPass) {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("portalSection").style.display = "block";
+        } else {
+            document.getElementById("loginError").style.display = "block";
+        }
+    }
+
+    function toggleChangePass() {
+        const box = document.getElementById("changePassBox");
+        box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+
+    function saveNewPassword() {
+        const newPass = document.getElementById("newPassInput").value.trim();
+        if (newPass.length < 4) {
+            alert("Please enter a password with at least 4 characters.");
+            return;
+        }
+        localStorage.setItem("bhardwaj_portal_pass", newPass);
+        document.getElementById("newPassInput").value = "";
+        document.getElementById("passSuccess").style.display = "block";
+    }
+
+    function logout() {
+        document.getElementById("userIdInput").value = "";
+        document.getElementById("passInput").value = "";
+        document.getElementById("portalSection").style.display = "none";
+        document.getElementById("changePassBox").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+    }
+</script>
+
 </body>
 </html>
