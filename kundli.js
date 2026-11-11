@@ -115,7 +115,6 @@ async function generateKundli() {
   document.getElementById("repRashi").textContent = RASHIS.at(mIdx);
   document.getElementById("repSunSign").textContent = RASHIS.at(sIdx);
   document.getElementById("repLagna").textContent = RASHIS.at(lIdx);
-
   const grahas = new Array(
     { name: "Lagna (Ascendant)", lon: lagna, st: "Rising" }, { name: "Surya (Sun)", lon: sun, st: "Direct" },
     { name: "Chandra (Moon)", lon: moon, st: "Direct" }, { name: "Mangal (Mars)", lon: mars, st: "Direct" },
@@ -136,68 +135,66 @@ async function generateKundli() {
   const fc = new Array(
     "<strong>Career & Finance:</strong> Steady expansion in leadership and family enterprise; favorable quarters for long-term investments.<br><strong>Family & Harmony:</strong> Stronger bonding with elders and ancestral roots; auspicious family gatherings indicated.<br><strong>Health & Guidance:</strong> Maintain disciplined morning routines and balanced diet.",
     "<strong>Career & Finance:</strong> Recognition for methodical work and property/asset stability.<br><strong>Family & Harmony:</strong> Supportive domestic environment; good period for resolving past misunderstandings.<br><strong>Health & Guidance:</strong> Focus on throat/respiratory care during seasonal shifts.",
-    "Career & Finance: New communication channels, writing, or advisory opportunities flourish.
-Family & Harmony: Short travels with siblings and relatives bring joy.
-Health & Guidance: Prioritize restful sleep and nervous system calm."
-);
-document.getElementById("repForecast").innerHTML = "Chandra Rashi (" + RASHIS.at(mIdx) + ") & Lagna (" + RASHIS.at(lIdx) + ") Yearly Outlook:" + fc.at(mIdx % 3);
-document.getElementById("kundliReport").style.display = "block";
-document.getElementById("btnDownloadPdf").style.display = "inline-block";
-document.getElementById("btnPrintKundli").style.display = "inline-block";
-if (typeof currentRole !== "undefined" && currentRole) document.getElementById("btnPushToFamily").style.display = "inline-block";
-document.getElementById("kundliReport").scrollIntoView({ behavior: "smooth" });
+    "<strong>Career & Finance:</strong> New communication channels, writing, or advisory opportunities flourish.<br><strong>Family & Harmony:</strong> Short travels with siblings and relatives bring joy.<br><strong>Health & Guidance:</strong> Prioritize restful sleep and nervous system calm."
+  );
+  document.getElementById("repForecast").innerHTML = "<p style='margin:0 0 6px 0;'><strong>Chandra Rashi (" + RASHIS.at(mIdx) + ") &amp; Lagna (" + RASHIS.at(lIdx) + ") Yearly Outlook:</strong></p>" + fc.at(mIdx % 3);
+
+  document.getElementById("kundliReport").style.display = "block";
+  document.getElementById("btnDownloadPdf").style.display = "inline-block";
+  document.getElementById("btnPrintKundli").style.display = "inline-block";
+  if (typeof currentRole !== "undefined" && currentRole) document.getElementById("btnPushToFamily").style.display = "inline-block";
+  document.getElementById("kundliReport").scrollIntoView({ behavior: "smooth" });
 }
+
 function buildNorthChart(lIdx, grahas) {
-const h = new Array("", "", "", "", "", "", "", "", "", "", "", "");
-grahas.slice(1).forEach(function(g) {
-const idx = (Math.floor(g.lon / 30) - lIdx + 12) % 12;
-h[idx] = (h.at(idx) + " " + g.name.split(" ").at(0).slice(0, 2)).trim();
-});
-const cx = new Array(150, 82, 38, 82, 38, 82, 150, 218, 262, 218, 262, 218);
-const cy = new Array(76, 38, 82, 150, 218, 262, 224, 262, 218, 150, 82, 38);
-let lbl = "";
-for (let i = 0; i < 12; i++) {
-lbl += '' + (((lIdx + i) % 12) + 1) + '';
-lbl += '' + h.at(i) + '';
+  const h = new Array("", "", "", "", "", "", "", "", "", "", "", "");
+  grahas.slice(1).forEach(function(g) {
+    const idx = (Math.floor(g.lon / 30) - lIdx + 12) % 12;
+    h[idx] = (h.at(idx) + " " + g.name.split(" ").at(0).slice(0, 2)).trim();
+  });
+  const cx = new Array(150, 82, 38, 82, 38, 82, 150, 218, 262, 218, 262, 218);
+  const cy = new Array(76, 38, 82, 150, 218, 262, 224, 262, 218, 150, 82, 38);
+  let lbl = "";
+  for (let i = 0; i < 12; i++) {
+    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) - 6) + '" font-size="10" fill="#6E0000" text-anchor="middle" font-weight="bold">' + (((lIdx + i) % 12) + 1) + '</text>';
+    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) + 8) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + h.at(i) + '</text>';
+  }
+  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#FFFDF4" stroke="#6E0000" stroke-width="2"/><line x1="2" y1="2" x2="298" y2="298" stroke="#6E0000" stroke-width="1.5"/><line x1="298" y1="2" x2="2" y2="298" stroke="#6E0000" stroke-width="1.5"/><polygon points="150,2 298,150 150,298 2,150" fill="none" stroke="#6E0000" stroke-width="1.5"/>' + lbl + '</svg>';
 }
-return '' + lbl + '';
-}
+
 function buildSouthChart(grahas) {
-const s = new Array("", "", "", "", "", "", "", "", "", "", "", "");
-grahas.forEach(function(g) {
-const idx = Math.floor(g.lon / 30);
-s[idx] = (s.at(idx) + " " + (g.name === "Lagna (Ascendant)" ? "Asc" : g.name.split(" ").at(0).slice(0, 2))).trim();
-});
-const cols = new Array(1, 2, 3, 3, 3, 3, 2, 1, 0, 0, 0, 0);
-const rows = new Array(0, 0, 0, 1, 2, 3, 3, 3, 3, 2, 1, 0);
-let cells = "";
-for (let i = 0; i < 12; i++) {
-const x = cols.at(i) * 74 + 2, y = rows.at(i) * 74 + 2;
-cells += '' + (i + 1) + '' + s.at(i) + '';
+  const s = new Array("", "", "", "", "", "", "", "", "", "", "", "");
+  grahas.forEach(function(g) {
+    const idx = Math.floor(g.lon / 30);
+    s[idx] = (s.at(idx) + " " + (g.name === "Lagna (Ascendant)" ? "Asc" : g.name.split(" ").at(0).slice(0, 2))).trim();
+  });
+  const cols = new Array(1, 2, 3, 3, 3, 3, 2, 1, 0, 0, 0, 0);
+  const rows = new Array(0, 0, 0, 1, 2, 3, 3, 3, 3, 2, 1, 0);
+  let cells = "";
+  for (let i = 0; i < 12; i++) {
+    const x = cols.at(i) * 74 + 2, y = rows.at(i) * 74 + 2;
+    cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#6E0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#6E0000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + s.at(i) + '</text>';
+  }
+  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#6E0000" stroke-width="2"/>' + cells + '<text x="150" y="154" font-size="12" fill="#6E0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
 }
-return '' + cells + 'KP RASHI';
-}
+
 function downloadKundliPDF() {
-const el = document.getElementById("kundliReport");
-html2pdf().set({ margin: 8, filename: (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf", html2canvas: { scale: 2 }, jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } }).from(el).save();
+  const el = document.getElementById("kundliReport");
+  html2pdf().set({ margin: 8, filename: (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf", html2canvas: { scale: 2 }, jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } }).from(el).save();
 }
+
 function printKundliOnly() {
-const w = window.open("", "", "width=850,height=900");
-w.document.write("Print Kundlibody{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.chart-svg{max-width:280px;display:block;margin:auto;}" + document.getElementById("kundliReport").innerHTML + "");
-w.document.close(); w.print();
+  const w = window.open("", "", "width=850,height=900");
+  w.document.write("<html><head><title>Print Kundli</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.chart-svg{max-width:280px;display:block;margin:auto;}</style></head><body>" + document.getElementById("kundliReport").innerHTML + "</body></html>");
+  w.document.close(); w.print();
 }
+
 function copyKundliToFamilyForm() {
-switchTab("family");
-document.getElementById("mFirst").value = document.getElementById("kFirst").value;
-document.getElementById("mLast").value = document.getElementById("kLast").value;
-document.getElementById("mDob").value = document.getElementById("kDob").value;
-document.getElementById("mTob").value = document.getElementById("kTob").value;
-document.getElementById("mPob").value = document.getElementById("kPlace").value + " (" + document.getElementById("kSystem").value + ")";
-document.getElementById("fForm").scrollIntoView({ behavior: "smooth" });
+  switchTab("family");
+  document.getElementById("mFirst").value = document.getElementById("kFirst").value;
+  document.getElementById("mLast").value = document.getElementById("kLast").value;
+  document.getElementById("mDob").value = document.getElementById("kDob").value;
+  document.getElementById("mTob").value = document.getElementById("kTob").value;
+  document.getElementById("mPob").value = document.getElementById("kPlace").value + " (" + document.getElementById("kSystem").value + ")";
+  document.getElementById("fForm").scrollIntoView({ behavior: "smooth" });
 }
-
-Once you paste and commit **`kundli.js`** and hard-refresh (**`Ctrl + F5`**) your live page, typing a city will automatically display **`23.29° N`** and **`76.20° E`** style coordinates and activate every button!
-
-<FollowUp>
-Let me know once **`kundli.js`** is committed and you've tested the **`23.29° N, 76.20° E`** auto-fill and **Generate Kundli** button on your live page!
-</FollowUp>
