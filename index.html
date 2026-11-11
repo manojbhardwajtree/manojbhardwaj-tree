@@ -74,6 +74,35 @@ th, td { border: 1px solid #622; padding: 6px; text-align: left; }
   </form>
   <table><thead><tr><th>ID</th><th>Name</th><th>Lineage</th><th>Father</th><th>Mother</th><th>DOB</th><th>Email/Phone</th><th class="no-print">Action</th></tr></thead><tbody id="tBody"></tbody></table>
 </div>
+<script>
+let editIdx = -1;
+if (!localStorage.getItem("b_pass")) localStorage.setItem("b_pass", "family108");
+const base = [
+  { id: "M_00", gen: "G1_00", lin: "Root Ancestor", first: "Shiv Dayal", last: "Mehta", father: "Root", mother: "", sib: "", stat: "Punyaatma", dob: "1786-01-15", tob: "08:45", pob: "Est. ~82 yrs (1786-1868)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_01", gen: "G1_01", lin: "Paternal Lineage", first: "Radha Krishan", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1814-03-10", tob: "08:45", pob: "Est. ~80 yrs (1814-1894)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_02", gen: "G1_00", lin: "Paternal Lineage", first: "Thakur Das", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1817-05-12", tob: "08:45", pob: "Est. ~79 yrs (1817-1896)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_03", gen: "G1_00", lin: "Paternal Lineage", first: "Uttam Chand", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1820-07-18", tob: "08:45", pob: "Est. ~81 yrs (1820-1901)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_04", gen: "G1_00", lin: "Paternal Lineage", first: "Lalchand", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1823-09-22", tob: "08:45", pob: "Est. ~84 yrs (1823-1907)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_05", gen: "G1_00", lin: "Paternal Lineage", first: "Manohar Lal", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1826-02-14", tob: "08:45", pob: "Est. ~78 yrs (1826-1904)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_06", gen: "G1_00", lin: "Paternal Lineage", first: "Harbanslal", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1829-04-19", tob: "08:45", pob: "Est. ~80 yrs (1829-1909)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_07", gen: "G1_00", lin: "Maternal Lineage", first: "Kaushalya", last: "Vijra", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1832-08-25", tob: "08:45", pob: "Est. ~77 yrs (1832-1909)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_08", gen: "G1_00", lin: "Paternal Lineage", first: "Amar Nath", last: "Mehta", father: "M_00", mother: "", sib: "", stat: "Punyaatma", dob: "1835-11-30", tob: "08:45", pob: "Est. ~83 yrs (1835-1918)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_09", gen: "G1_00", lin: "Paternal Lineage", first: "Brij Mohan", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1842-02-10", tob: "08:45", pob: "Est. ~80 yrs (1842-1922)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_10", gen: "G1_00", lin: "Paternal Lineage", first: "Harbanslal", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1845-04-15", tob: "08:45", pob: "Est. ~78 yrs (1845-1923)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_11", gen: "G1_00", lin: "Paternal Lineage", first: "Kulbhushan", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1848-06-20", tob: "08:45", pob: "Est. ~84 yrs (1848-1932)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_12", gen: "G1_00", lin: "Paternal Lineage", first: "Virendra", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1851-08-24", tob: "08:45", pob: "Est. ~81 yrs (1851-1932)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_13", gen: "G1_00", lin: "Maternal Lineage", first: "Praveen", last: "Vijra", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1854-10-12", tob: "08:45", pob: "Est. ~79 yrs (1854-1933)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_14", gen: "G1_00", lin: "Maternal Lineage", first: "Meena", last: "Paul", father: "M_01", mother: "", sib: "", stat: "Punyaatma", dob: "1857-01-18", tob: "08:45", pob: "Est. ~80 yrs (1857-1937)", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_15", gen: "G1_00", lin: "Paternal Lineage", first: "Iqbal Krishan", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Alive", dob: "1860-03-22", tob: "08:45", pob: "Est. ~82 yrs", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_16", gen: "G1_00", lin: "Paternal Lineage", first: "Kewal Krishan", last: "Mehta", father: "M_01", mother: "", sib: "", stat: "Alive", dob: "1965-01-01", tob: "08:45", pob: "Haryana", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_17", gen: "G1_00", lin: "Maternal Lineage", first: "Reeta", last: "Pal", father: "M_01", mother: "", sib: "", stat: "Alive", dob: "1866-07-14", tob: "08:45", pob: "Est. ~78 yrs", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_18", gen: "G1_00", lin: "Maternal Lineage", first: "Renu", last: "Batra", father: "M_01", mother: "", sib: "", stat: "Alive", dob: "1869-09-28", tob: "08:45", pob: "Est. ~80 yrs", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_22", gen: "G1_00", lin: "Paternal Lineage", first: "Sunil", last: "Mehta", father: "M_11", mother: "", sib: "M_23, M_24, M_25, M_26", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_23", gen: "G1_00", lin: "Paternal Lineage", first: "Seema", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_24, M_25, M_26", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_24", gen: "G1_00", lin: "Paternal Lineage", first: "Satish", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_23, M_25, M_26", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_25", gen: "G1_00", lin: "Paternal Lineage", first: "Manoj", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_23, M_24, M_26", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "" },
+  { id: "M_26", gen: "G1_00", lin: "Paternal Lineage", first: "Sanjay", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_23, M_24, M_25", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "" }
+];  
 function unlock() {
   if (document.getElementById("uid").value.trim().toLowerCase() === "bhardwaj" && document.getElementById("pwd").value === localStorage.getItem("b_pass")) {
     document.getElementById("loginBox").style.display = "none";
