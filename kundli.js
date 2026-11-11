@@ -13,7 +13,31 @@ window.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
+function downloadKundliPDF() {
+  const el = document.getElementById("kundliReport");
+  const fname = (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf";
+  const opt = {
+    margin: 8,
+    filename: fname,
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  };
 
+  if (typeof html2pdf !== "undefined") {
+    html2pdf().set(opt).from(el).save();
+    return;
+  }.
+
+  const s = document.createElement("script");
+  s.src = new Array("https://cloudflare.com";, "/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js").join("");
+  s.onload = function() {
+    html2pdf().set(opt).from(el).save();
+  };
+  s.onerror = function() {
+    alert("Could not load PDF library. Please check your internet connection or use Print Kundli.");
+  };
+  document.head.appendChild(s);
+}
 function switchTab(t) {
   const kSec = document.getElementById("kundliSection");
   const fSec = document.getElementById("familySection");
