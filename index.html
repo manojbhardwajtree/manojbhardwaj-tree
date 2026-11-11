@@ -81,3 +81,28 @@ function unlock() {
     render();
   } else { document.getElementById("err").style.display = "block"; }
 }
+function getList() { return JSON.parse(localStorage.getItem("b_db_v5")) || base; }
+function render() {
+  const list = getList();
+  if (editIdx === -1) document.getElementById("mId").value = "M_" + String(list.length).padStart(2, '0');
+  ["mFather","mMother","mSib"].forEach(id => {
+    const el = document.getElementById(id); el.innerHTML = '<option value="">-- Select ID --</option>';
+    list.forEach(r => el.innerHTML += `<option value="${r.id}">${r.id} - ${r.first} ${r.last}</option>`);
+  });
+  const tb = document.getElementById("tBody"); tb.innerHTML = "";
+  list.forEach((r, i) => tb.innerHTML += `<tr><td>${r.id}</td><td>${r.first} ${r.last}</td><td>${r.lin}</td><td>${r.father}</td><td>${r.mother}</td><td>${r.dob}</td><td>${r.email} ${r.phone}</td><td class="no-print"><button onclick="ed(${i})">Edit</button> <button onclick="del(${i})">Erase</button></td></tr>`);
+}
+function saveRec(e) {
+  e.preventDefault(); const list = getList();
+  const obj = { id: mId.value, gen: mGen.value, lin: mLin.value, first: mFirst.value, last: mLast.value, father: mFather.value, mother: mMother.value, sib: mSib.value, stat: mStat.value, dob: mDob.value, tob: mTob.value, pob: mPob.value, gotra: mGotra.value, email: mEmail.value, phone: mPhone.value };
+  if (editIdx > -1) { list[editIdx] = obj; editIdx = -1; } else { list.push(obj); }
+  localStorage.setItem("b_db_v5", JSON.stringify(list)); clr(); render();
+}
+function ed(i) { const r = getList()[i]; editIdx = i; mId.value=r.id; mGen.value=r.gen; mLin.value=r.lin; mFirst.value=r.first; mLast.value=r.last; mFather.value=r.father; mMother.value=r.mother; mSib.value=r.sib; mStat.value=r.stat; mDob.value=r.dob; mTob.value=r.tob; mPob.value=r.pob; mGotra.value=r.gotra; mEmail.value=r.email; mPhone.value=r.phone; }
+function del(i) { if (confirm("Erase record?")) { const list = getList(); list.splice(i, 1); localStorage.setItem("b_db_v5", JSON.stringify(list)); render(); } }
+function clr() { editIdx = -1; document.getElementById("fForm").reset(); mLast.value="Mehta"; mGotra.value="Bhardwaj"; render(); }
+function changePass() { const p = prompt("New password (min 4 chars):"); if (p && p.length >= 4) { localStorage.setItem("b_pass", p); alert("Password updated!"); } }
+function exportCSV() { let csv = "ID,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone\n"; getList().forEach(r => csv += `"${r.id}","${r.gen}","${r.lin}","${r.first}","${r.last}","${r.father}","${r.mother}","${r.sib}","${r.stat}","${r.dob}","${r.tob}","${r.pob}","${r.gotra}","${r.email}","${r.phone}"\n`); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"})); a.download = "historyhome.csv"; a.click(); }
+</script>
+</body>
+</html>
