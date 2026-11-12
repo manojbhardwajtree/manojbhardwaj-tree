@@ -177,30 +177,18 @@ render();
 function changePass() {
 const p = prompt("Enter new password for your current role (min 4 characters):");
 if (p && p.length >= 4) {
-if (currentRole === "admin") localStorage.setItem("b_admin_pass", p);
-else localStorage.setItem("b_family_pass", p);
-alert("Password updated successfully!");
-}
-}
-function exportCSV() {
-let csv = "ID,BirthOrder,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone,AdminLocked\n";
-getList().forEach(r => {
-csv += "${r.id}","${r.order || 1}","${r.gen}","${r.lin}","${r.first}","${r.last}","${r.father}","${r.mother}","${r.sib}","${r.stat}","${r.dob}","${r.tob}","${r.pob}","${r.gotra}","${r.email}","${r.phone}","${r.locked ? 'Yes' : 'No'}"\n;
-});
-const a = document.createElement("a");
-a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-a.download = "historyhome.csv";
-a.click();
-}
 
-<FollowUp>
-Once **`family.js`** is committed inside **`manojbhardwaj-tree`**, let me know and I'll send **File 3 (`kundli.js`)**!
-</FollowUp>
       <td class="no-print">${editBtn} ${delBtn}</td>
     </tr>`;
   });
 }
-
+<td>${r.dob}</td>
+      <td>${r.pob}</td>
+      <td>${r.email} ${r.phone}</td>
+      <td class="no-print">${editBtn} ${delBtn}</td>
+    </tr>`;
+  });
+}
 function saveRec(e) {
   e.preventDefault();
 const list = getList();
