@@ -175,89 +175,14 @@ mLast.value = "Mehta"; mGotra.value = "Bhardwaj"; mOrder.value = 1; mLocked.chec
 render();
 }
 function changePass() {
-const p = prompt("Enter new password for your current role (min 4 characters):");
-if (p && p.length >= 4) {
+  const p = prompt("Enter new password for your current role (min 4 characters):");
+  if (p && p.length >= 4) {
+    if (currentRole === "admin") localStorage.setItem("b_admin_pass", p);
+    else localStorage.setItem("b_family_pass", p);
+    alert("Password updated successfully!");
+  }
+}
 
-      <td class="no-print">${editBtn} ${delBtn}</td>
-    </tr>`;
-  });
-}
-<td>${r.dob}</td>
-      <td>${r.pob}</td>
-      <td>${r.email} ${r.phone}</td>
-      <td class="no-print">${editBtn} ${delBtn}</td>
-    </tr>`;
-  });
-}
-function saveRec(e) {
-  e.preventDefault();
-const list = getList();
-if (editIdx > -1 && list[editIdx].locked && currentRole !== "admin") {
-alert("This record is verified and locked by Admin.");
-return;
-}
-const obj = {
-id: mId.value.trim(),
-order: parseInt(mOrder.value, 10) || 1,
-gen: mGen.value,
-lin: mLin.value,
-first: mFirst.value.trim(),
-last: mLast.value.trim(),
-father: mFather.value,
-mother: mMother.value,
-sib: mSib.value.trim(),
-stat: mStat.value,
-dob: mDob.value,
-tob: mTob.value,
-pob: mPob.value.trim(),
-gotra: mGotra.value.trim(),
-email: mEmail.value.trim(),
-phone: mPhone.value.trim(),
-locked: currentRole === "admin" ? mLocked.checked : false
-};
-if (editIdx > -1) { list[editIdx] = obj; editIdx = -1; }
-else { list.push(obj); }
-localStorage.setItem("b_db_v6", JSON.stringify(list));
-clr();
-render();
-}
-function ed(i) {
-const r = getList()[i];
-if (r.locked && currentRole !== "admin") {
-alert("Only Admin can edit a verified record.");
-return;
-}
-editIdx = i;
-mId.value = r.id; mOrder.value = r.order || 1; mGen.value = r.gen; mLin.value = r.lin;
-mFirst.value = r.first; mLast.value = r.last; mFather.value = r.father; mMother.value = r.mother;
-mSib.value = r.sib; mStat.value = r.stat; mDob.value = r.dob; mTob.value = r.tob;
-mPob.value = r.pob; mGotra.value = r.gotra; mEmail.value = r.email; mPhone.value = r.phone;
-mLocked.checked = Boolean(r.locked);
-document.getElementById("fForm").scrollIntoView({ behavior: "smooth" });
-}
-function del(i) {
-if (currentRole !== "admin") return;
-if (confirm("Admin Action: Permanently erase this record?")) {
-const list = getList();
-list.splice(i, 1);
-localStorage.setItem("b_db_v6", JSON.stringify(list));
-render();
-}
-}
-function clr() {
-editIdx = -1;
-document.getElementById("fForm").reset();
-mLast.value = "Mehta"; mGotra.value = "Bhardwaj"; mOrder.value = 1; mLocked.checked = false;
-render();
-}
-function changePass() {
-const p = prompt("Enter new password for your current role (min 4 characters):");
-if (p && p.length >= 4) {
-if (currentRole === "admin") localStorage.setItem("b_admin_pass", p);
-else localStorage.setItem("b_family_pass", p);
-alert("Password updated successfully!");
-}
-}
 function exportCSV() {
   let csv = "ID,BirthOrder,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone,AdminLocked\n";
   getList().forEach(function(r) {
