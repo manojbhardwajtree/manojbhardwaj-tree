@@ -56,9 +56,13 @@ async function lookupCoords() {
     return;
   }
 
+  const parts = raw.toLowerCase().split(/[\s,]+/).filter(Boolean);
   const cityOnly = raw.toLowerCase().split(",").at(0).trim();
-  if (CITIES[cityOnly]) {
-    const c = CITIES[cityOnly];
+  const firstWord = parts.at(0) || "";
+  const matchedKey = CITIES[cityOnly] ? cityOnly : (CITIES[firstWord] ? firstWord : null);
+
+  if (matchedKey) {
+    const c = CITIES[matchedKey];
     document.getElementById("kLat").value = fmtLat(c.at(0));
     document.getElementById("kLon").value = fmtLon(c.at(1));
     if (st) st.textContent = "✅ Detected: " + raw + " (" + fmtLat(c.at(0)) + ", " + fmtLon(c.at(1)) + ")";
@@ -71,8 +75,13 @@ async function lookupCoords() {
     let r = await fetch(base + encodeURIComponent(raw));
     let d = r.ok ? await r.json() : null;
 
-    if ((!d || !d.results || d.results.length === 0) && raw.indexOf(",") !== -1) {
+    if ((!d || !d.results || d.results.length === 0) && cityOnly !== raw.toLowerCase()) {
       r = await fetch(base + encodeURIComponent(cityOnly));
+      d = r.ok ? await r.json() : null;
+    }
+
+    if ((!d || !d.results || d.results.length === 0) && firstWord.length >= 3) {
+      r = await fetch(base + encodeURIComponent(firstWord));
       d = r.ok ? await r.json() : null;
     }
 
@@ -85,12 +94,12 @@ async function lookupCoords() {
       document.getElementById("kLon").value = fmtLon(lonVal);
       if (st) st.textContent = "✅ Detected: " + label + " (" + fmtLat(latVal) + ", " + fmtLon(lonVal) + ")";
     } else {
-      if (st) st.textContent = "⚠️ Location not auto-found. Try City + State (e.g., Pune, Maharashtra).";
+      if (st) st.textContent = "⚠️ Location not auto-found. Check spelling or enter Lat/Lon manually.";
     }
   } catch (e) {
     if (st) st.textContent = "⚠️ Lookup slow. Enter Lat/Lon manually if needed.";
   }
-} 
+}
 const RASHIS = new Array("Mesha (Aries)", "Vrishabha (Taurus)", "Mithuna (Gemini)", "Karka (Cancer)", "Simha (Leo)", "Kanya (Virgo)", "Tula (Libra)", "Vrishchika (Scorpio)", "Dhanu (Sagittarius)", "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)");
 const NAKS = new Array("Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati");
 const TITHIS = new Array("Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima / Amavasya");
