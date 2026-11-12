@@ -109,7 +109,13 @@ function render() {
       <td>${r.dob}</td>
       <td>${r.pob}</td>
       <td>${r.email} ${r.phone}</td>
-      const list = getList();
+      <td class="no-print">${editBtn} ${delBtn}</td>
+    </tr>`;
+  });
+}
+function saveRec(e) {
+  e.preventDefault();
+  const list = getList();
 if (editIdx > -1 && list[editIdx].locked && currentRole !== "admin") {
 alert("This record is verified and locked by Admin.");
 return;
@@ -265,12 +271,21 @@ alert("Password updated successfully!");
 }
 }
 function exportCSV() {
-let csv = "ID,BirthOrder,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone,AdminLocked\n";
-getList().forEach(r => {
-csv += "${r.id}","${r.order || 1}","${r.gen}","${r.lin}","${r.first}","${r.last}","${r.father}","${r.mother}","${r.sib}","${r.stat}","${r.dob}","${r.tob}","${r.pob}","${r.gotra}","${r.email}","${r.phone}","${r.locked ? 'Yes' : 'No'}"\n;
-});
-const a = document.createElement("a");
-a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-a.download = "historyhome.csv";
-a.click();
+  let csv = "ID,BirthOrder,Gen,Lineage,First,Last,Father,Mother,Sibling,Status,DOB,TOB,POB,Gotra,Email,Phone,AdminLocked\n";
+  getList().forEach(function(r) {
+    const row = [
+      r.id, r.order || 1, r.gen, r.lin, r.first, r.last,
+      r.father, r.mother, r.sib, r.stat, r.dob, r.tob,
+      r.pob, r.gotra, r.email, r.phone, r.locked ? "Yes" : "No"
+    ].map(function(v) { return '"' + String(v || "").replace(/"/g, '""') + '"'; }).join(",");
+    csv += row + "\n";
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  a.download = "historyhome.csv";
+  a.click();
+}
+
+function familyLogout() {
+  signOut();
 }
