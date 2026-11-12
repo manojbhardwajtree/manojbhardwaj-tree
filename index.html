@@ -174,50 +174,125 @@
             <button class="btn btn-sec" onclick="signOut()">🔒 Lock</button>
           </div>
         </div>
-✍️ Add / Edit Family Member Record
+        <form id="fForm" onsubmit="saveRec(event)" style="background:#380303; border:1px solid #FFD700; border-radius:8px; padding:14px; margin-bottom:16px;">
+          <h3 style="margin-top:0; color:#FFD700;">✍️ Add / Edit Family Member Record</h3>
+          <div class="grid">
+            <div>
+              <label>Member ID (Editable - e.g. M_25)</label>
+              <input id="mId" required>
+            </div>
+            <div>
+              <label>Sibling Birth Order (1 = Eldest)</label>
+              <input id="mOrder" type="number" value="1" min="1">
+            </div>
+            <div>
+              <label>Generation</label>
+              <select id="mGen">
+                <option value="G0_00">G0_00 (Root)</option>
+                <option value="G1_00">G1_00</option>
+                <option value="G2_00">G2_00</option>
+                <option value="G3_00" selected>G3_00</option>
+                <option value="G4_00">G4_00</option>
+                <option value="G5_00">G5_00</option>
+              </select>
+            </div>
+            <div>
+              <label>Lineage Branch</label>
+              <select id="mLin">
+                <option value="Paternal Lineage">Paternal Lineage</option>
+                <option value="Maternal Lineage">Maternal Lineage</option>
+                <option value="Root Ancestor">Root Ancestor</option>
+              </select>
+            </div>
+            <div>
+              <label>First Name *</label>
+              <input id="mFirst" required>
+            </div>
+            <div>
+              <label>Last Name</label>
+              <input id="mLast" value="Mehta">
+            </div>
+            <div>
+              <label>Father ID</label>
+              <select id="mFather"></select>
+            </div>
+            <div>
+              <label>Mother ID</label>
+              <select id="mMother"></select>
+            </div>
+            <div>
+              <label>Siblings (IDs)</label>
+              <input id="mSib" placeholder="e.g., M_22, M_23">
+            </div>
+            <div>
+              <label>Status</label>
+              <select id="mStat">
+                <option value="Alive">Alive</option>
+                <option value="Punyaatma">Punyaatma</option>
+              </select>
+            </div>
+            <div>
+              <label>Date of Birth</label>
+              <input id="mDob" type="date">
+            </div>
+            <div>
+              <label>Time of Birth</label>
+              <input id="mTob" type="time" value="08:45">
+            </div>
+            <div>
+              <label>Birth Place / Lifespan Note</label>
+              <input id="mPob" placeholder="City or Lifespan Note">
+            </div>
+            <div>
+              <label>Gotra</label>
+              <input id="mGotra" value="Bhardwaj">
+            </div>
+            <div>
+              <label>Email ID</label>
+              <input id="mEmail" type="email">
+            </div>
+            <div>
+              <label>Contact No</label>
+              <input id="mPhone">
+            </div>
+          </div>
 
-Member ID (Editable - e.g. M_25)
-Sibling Birth Order (1 = Eldest)
-Generation
-G0_00 (Root)
-G1_00
-G2_00
-G3_00
-G4_00
-G5_00
+          <div id="adminLockBox" style="display:none; margin-top:10px; background:#4A0202; padding:8px; border-radius:4px; border:1px solid #FFD700;">
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; margin:0;">
+              <input id="mLocked" type="checkbox" style="width:auto;">
+              <span>🛡️ <strong>Admin Verified &amp; Locked</strong> — Locks row from family edits.</span>
+            </label>
+          </div>
 
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button type="submit" class="btn">✅ Save Record</button>
+            <button type="button" class="btn btn-sec" onclick="clr()">🧹 Clear</button>
+          </div>
+        </form>
 
-Lineage Branch
-Paternal Lineage
-Maternal Lineage
-Root Ancestor
+        <div style="overflow-x:auto;">
+          <table class="k-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Order</th>
+                <th>Name</th>
+                <th>Lineage</th>
+                <th>Father</th>
+                <th>DOB</th>
+                <th>Place / Notes</th>
+                <th>Contact</th>
+                <th class="no-print">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tBody"></tbody>
+          </table>
+        </div>
 
-
-First Name *
-Last Name
-Father ID
-Mother ID
-Siblings (IDs)
-StatusAlivePunyaatma
-Date of Birth
-Time of Birth
-Birth Place / Lifespan Note
-Gotra
-Email ID
-Contact No
- 🛡️ Admin Verified & Locked
-Locks row from family edits.
-
-
-
-✅ Save Record
-🧹 Clear
-
-
-ID	Order	Name	Lineage	Father	DOB	Place / Notes	Contact	Action
-
-🚪 Sign Out of Family Portal
-<script src="family.js?v=15"></script>
-<script src="kundli.js?v=16"></script>
-</body>
-</html>
+        <div class="no-print" style="text-align:center; margin-top:14px;">
+          <button type="button" class="btn btn-danger" onclick="signOut()">🚪 Sign Out of Family Portal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
