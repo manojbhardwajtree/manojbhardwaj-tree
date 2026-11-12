@@ -235,12 +235,9 @@ function buildSouthChart(grahas) {
     cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#6E0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#6E0000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + s.at(i) + '</text>';
   }
   return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#6E0000" stroke-width="2"/>' + cells + '<text x="150" y="154" font-size="12" fill="#6E0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
+}
 
-  const w = window.open("", "_blank", "width=850,height=900");
-  if (!w) {
-    alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
-    return;}  
- function downloadKundliPDF() {
+function downloadKundliPDF() {
   const el = document.getElementById("kundliReport");
   const fname = (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf";
   const opt = {
@@ -264,9 +261,13 @@ function buildSouthChart(grahas) {
     alert("Could not load PDF library. Please check your internet connection or use Print Kundli.");
   };
   document.head.appendChild(s);
-} 
+}
 
 function printKundliOnly() {
+  const w = window.open("", "_blank", "width=850,height=900");
+  if (!w) {
+    alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
+    return;
   }
   w.document.write("<html><head><title>Print Kundli</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.chart-svg{max-width:280px;display:block;margin:auto;}</style></head><body>" + document.getElementById("kundliReport").innerHTML + "</body></html>");
   w.document.close();
@@ -286,5 +287,4 @@ function copyKundliToFamilyForm() {
   }
   const fForm = document.getElementById("fForm");
   if (fForm) fForm.scrollIntoView({ behavior: "smooth" });
- }
- 
+}
