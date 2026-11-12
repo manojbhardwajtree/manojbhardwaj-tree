@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 });
-}
 
 function signOut() {
   currentRole = null;
