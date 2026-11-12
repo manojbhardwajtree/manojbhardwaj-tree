@@ -30,10 +30,9 @@ const base = [
   { id: "M_25", order: 4, gen: "G3_00", lin: "Paternal Lineage", first: "Manoj", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_23, M_24, M_26", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "", locked: false },
   { id: "M_26", order: 5, gen: "G3_00", lin: "Paternal Lineage", first: "Sanjay", last: "Mehta", father: "M_11", mother: "", sib: "M_22, M_23, M_24, M_25", stat: "Alive", dob: "", tob: "", pob: "", gotra: "Bhardwaj", email: "", phone: "", locked: false }
 ];
-
 function unlock() {
   const u = document.getElementById("uid").value.trim().toLowerCase();
-  const p = document.getElementById("pwd").value;
+  const p = document.getElementById("pwd").value.trim();
   if (u === "admin" && p === localStorage.getItem("b_admin_pass")) {
     currentRole = "admin";
   } else if (u === "bhardwaj" && p === localStorage.getItem("b_family_pass")) {
@@ -48,6 +47,21 @@ function unlock() {
   document.getElementById("roleBadge").textContent = currentRole === "admin" ? "👑 ADMIN (FULL OVERWRITE & LOCK)" : "👪 FAMILY CONTRIBUTOR";
   document.getElementById("adminLockBox").style.display = currentRole === "admin" ? "block" : "none";
   render();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  ["uid", "pwd"].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          unlock();
+        }
+      });
+    }
+  });
+});
 }
 
 function signOut() {
