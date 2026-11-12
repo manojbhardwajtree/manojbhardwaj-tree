@@ -13,31 +13,8 @@ window.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-function downloadKundliPDF() {
-  const el = document.getElementById("kundliReport");
-  const fname = (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf";
-  const opt = {
-    margin: 8,
-    filename: fname,
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  };
 
-  if (typeof html2pdf !== "undefined") {
-    html2pdf().set(opt).from(el).save();
-    return;
-  }.
 
-  const s = document.createElement("script");
-  s.src = new Array("https://cloudflare.com";, "/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js").join("");
-  s.onload = function() {
-    html2pdf().set(opt).from(el).save();
-  };
-  s.onerror = function() {
-    alert("Could not load PDF library. Please check your internet connection or use Print Kundli.");
-  };
-  document.head.appendChild(s);
-}
 function switchTab(t) {
   const kSec = document.getElementById("kundliSection");
   const fSec = document.getElementById("familySection");
@@ -113,41 +90,7 @@ async function lookupCoords() {
   } catch (e) {
     if (st) st.textContent = "⚠️ Lookup slow. Enter Lat/Lon manually if needed.";
   }
-} {
-  const placeEl = document.getElementById("kPlace");
-  const st = document.getElementById("geoStatus");
-  if (!placeEl) return;
-  const raw = placeEl.value.trim();
-  if (!raw) return;
-
-  const key = raw.toLowerCase().split(",").at(0).trim();
-  if (CITIES[key]) {
-    const c = CITIES[key];
-    document.getElementById("kLat").value = fmtLat(c.at(0));
-    document.getElementById("kLon").value = fmtLon(c.at(1));
-    if (st) st.textContent = "✅ Detected: " + raw + " (" + fmtLat(c.at(0)) + ", " + fmtLon(c.at(1)) + ")";
-    return;
-  }
-
-  if (st) st.textContent = "🔍 Searching coordinates for " + raw + "...";
-  try {
-    const url = "https://open-meteo.com" + encodeURIComponent(key) + "&count=1&language=en&format=json";
-    const r = await fetch(url);
-    if (!r.ok) throw new Error("Network response error");
-    const d = await r.json();
-    if (d.results && d.results.length > 0) {
-      const loc = d.results.at(0);
-      document.getElementById("kLat").value = fmtLat(Number(loc.latitude));
-      document.getElementById("kLon").value = fmtLon(Number(loc.longitude));
-      if (st) st.textContent = "✅ Detected: " + loc.name + " (" + fmtLat(Number(loc.latitude)) + ", " + fmtLon(Number(loc.longitude)) + ")";
-    } else {
-      if (st) st.textContent = "⚠️ City not auto-found. Enter Lat/Lon like 23.29° N and 76.20° E.";
-    }
-  } catch (e) {
-    if (st) st.textContent = "⚠️ Lookup slow. Enter Lat/Lon like 23.29° N and 76.20° E.";
-  }
-}
-
+} 
 const RASHIS = new Array("Mesha (Aries)", "Vrishabha (Taurus)", "Mithuna (Gemini)", "Karka (Cancer)", "Simha (Leo)", "Kanya (Virgo)", "Tula (Libra)", "Vrishchika (Scorpio)", "Dhanu (Sagittarius)", "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)");
 const NAKS = new Array("Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati");
 const TITHIS = new Array("Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima / Amavasya");
@@ -292,29 +235,38 @@ function buildSouthChart(grahas) {
     cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#6E0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#6E0000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + s.at(i) + '</text>';
   }
   return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#6E0000" stroke-width="2"/>' + cells + '<text x="150" y="154" font-size="12" fill="#6E0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
-} #kPlace
-  
 
-function downloadKundliPDF() {
-  if (typeof html2pdf === "undefined") {
-    alert("PDF generator library is still loading. Please try again in a moment.");
-    return;
-  }
+  const w = window.open("", "_blank", "width=850,height=900");
+  if (!w) {
+    alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
+    return;}  
+ function downloadKundliPDF() {
   const el = document.getElementById("kundliReport");
   const fname = (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf";
-  html2pdf().set({
+  const opt = {
     margin: 8,
     filename: fname,
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  }).from(el).save();
-}
+  };
+
+  if (typeof html2pdf !== "undefined") {
+    html2pdf().set(opt).from(el).save();
+    return;
+  }
+
+  const s = document.createElement("script");
+  s.src = "https://" + "cdnjs" + ".cloudflare" + ".com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+  s.onload = function() {
+    html2pdf().set(opt).from(el).save();
+  };
+  s.onerror = function() {
+    alert("Could not load PDF library. Please check your internet connection or use Print Kundli.");
+  };
+  document.head.appendChild(s);
+} 
 
 function printKundliOnly() {
-  const w = window.open("", "_blank", "width=850,height=900");
-  if (!w) {
-    alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
-    return;
   }
   w.document.write("<html><head><title>Print Kundli</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.chart-svg{max-width:280px;display:block;margin:auto;}</style></head><body>" + document.getElementById("kundliReport").innerHTML + "</body></html>");
   w.document.close();
