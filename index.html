@@ -1,267 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shree Ganeshaya Namah | Public Vedic Lineage & Panchang Portal</title>
- <style>
-    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: radial-gradient(circle at top, #FFF9EE, #FFEBCC, #FFD699); color: #1E242B; }
-    .auspicious-header { background: linear-gradient(180deg, #E02424, #9E0B0B); color: #FFF; text-align: center; padding: 18px 20px; border-bottom: 4px solid #FFCC33; }
-    .ganesha-emblem { width: 54px; height: 54px; margin: 0 auto 6px; border-radius: 50%; border: 2px solid #FFCC33; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #FFCC33; }
-    .mantra-banner { color: #FFCC33; font-weight: 700; font-size: 0.85rem; }
-    .saffron-silk-bar { background: linear-gradient(135deg, #FF9933, #E67300); border-bottom: 2px solid #FFCC33; padding: 12px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
-    .membership-badge { background: #FFF; padding: 6px 14px; border-radius: 999px; font-weight: 700; color: #B81414; border: 1px solid #B81414; }
-    .admin-price-box { background: #4A0E0E; color: #FFF; padding: 6px 14px; border-radius: 8px; border: 1px solid #FFCC33; }
-    .admin-price-box input { width: 70px; padding: 4px; text-align: center; font-weight: bold; }
-    .container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
-    .nav-tabs { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-    .tab-btn { background: #FFF; border: 1px solid #FFCC33; color: #4A0E0E; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-    .tab-btn.active, .btn-primary { background: #D91E1E; color: #FFF; border: 1px solid #FFCC33; padding: 9px 15px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-    .btn-saffron { background: #FF9933; color: #4A0E0E; border: 1px solid #4A0E0E; padding: 9px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; }
-    .frosted-card { background: rgba(255,255,255,0.92); border: 1px solid #FFCC33; border-radius: 14px; padding: 20px; box-shadow: 0 8px 20px rgba(158,11,11,0.1); }
-    .card-header { display: flex; justify-content: space-between; border-bottom: 2px solid #F0D9B5; padding-bottom: 10px; margin-bottom: 16px; }
-    .card-title { color: #B81414; font-size: 1.2rem; font-weight: 800; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; color: #4A0E0E; margin-bottom: 4px; }
-    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #D9B38C; border-radius: 6px; }
-    .member-node { display: inline-block; background: #FFF; border: 2px solid #FF9933; border-left: 5px solid #D91E1E; border-radius: 8px; padding: 10px 14px; margin: 6px; cursor: pointer; }
-    .kundli-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
-    .vedic-table { width: 100%; border-collapse: collapse; }
-    .vedic-table th { background: #B81414; color: #FFF; padding: 9px; text-align: left; }
-    .vedic-table td { padding: 8px; border-bottom: 1px solid #F0D9B5; }
-  </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ManojBhardwaj.in - Family Lineage &amp; Vedic Kundli Portal</title>
+ <link rel="stylesheet" href="style.css">
+ 
 </head>
 <body>
 
-  <!-- 1. AUSPICIOUS BRIGHT RED & LORD GANESHA HEADER -->
-  <header class="auspicious-header">
-    <div class="ganesha-crest">
-      <div class="ganesha-emblem" title="Lord Ganesha">ॐ</div>
-      <div class="mantra-banner">॥ श्री गणेशाय नमः ॥</div>
-    </div>
-    <h1 class="portal-title">Vedic Family Lineage &amp; Panchang Portal</h1>
-    <p class="portal-subtitle">Create Your Heritage Tree • View North Indian Kundli • Download Daily Panchang</p>
-  </header>
+<div class="sacred-frame">
+  <div class="inner-portal">
 
-  <!-- 2. GLOSSY SAFFRON SILK BAR (MEMBERSHIP & ADMIN PRICE CONTROL) -->
-  <section class="saffron-silk-bar">
-    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-      <span class="membership-badge" id="planStatus">Current Plan: Free Preview</span>
-      <button class="btn-primary no-print" onclick="togglePlan()">
-        Switch to Pro (<span id="displayPrice">₹199</span>/yr)
-      </button>
+    <!-- Sacred Lord Ganesha Header -->
+    <div class="ganesha-header">
+      <svg width="78" height="78" viewBox="0 0 120 120" style="display:block; margin:0 auto 4px auto;">
+        <circle cx="60" cy="60" r="56" fill="#4A0202" stroke="#FFD700" stroke-width="3"/>
+        <circle cx="60" cy="60" r="49" fill="none" stroke="#FF9933" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <path d="M42 40 L60 16 L78 40 Z" fill="#FFD700"/>
+        <line x1="47" y1="32" x2="73" y2="32" stroke="#8B0000" stroke-width="2.5"/>
+        <ellipse cx="32" cy="62" rx="13" ry="18" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
+        <ellipse cx="88" cy="62" rx="13" ry="18" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
+        <circle cx="60" cy="58" r="22" fill="#FF9933" stroke="#FFD700" stroke-width="2"/>
+        <path d="M60 62 C60 80, 46 84, 48 96 C49 102, 57 101, 56 95" fill="none" stroke="#FFD700" stroke-width="6" stroke-linecap="round"/>
+        <line x1="55" y1="44" x2="65" y2="44" stroke="#FFF" stroke-width="2"/>
+        <line x1="55" y1="48" x2="65" y2="48" stroke="#FFF" stroke-width="2"/>
+        <circle cx="60" cy="46" r="2" fill="#B30000"/>
+        <circle cx="51" cy="55" r="2.3" fill="#2B0500"/>
+        <circle cx="69" cy="55" r="2.3" fill="#2B0500"/>
+        <path d="M47 72 L40 80" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+        <path d="M73 72 L77 76" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="mantra">॥ श्री गणेशाय नमः ॥</div>
+      <h1>ManojBhardwaj.in</h1>
+      <p style="margin:2px 0 0 0; color:#FFE8A3; font-size:0.92em;">Bhardwaj Family Lineage Registry &amp; Vedic Panchang / Kundli Portal</p>
     </div>
-
-    <div class="admin-price-box no-print">
-      <label for="adminPriceInput">Admin Price (₹/yr):</label>
-      <input type="number" id="adminPriceInput" value="199" min="0" onchange="updateAdminPrice()" />
-    </div>
-  </section>
-
-  <!-- 3. MAIN WORKSPACE CONTAINER -->
-  <main class="container">
 
     <!-- Navigation Tabs -->
-    <nav class="nav-tabs no-print">
-      <button class="tab-btn active" onclick="showTab('lineage', this)">1. Family Lineage Tree</button>
-      <button class="tab-btn" onclick="showTab('kundli', this)">2. North Indian Kundli</button>
-      <button class="tab-btn" onclick="showTab('panchang', this)">3. Daily Panchang</button>
-      <button class="btn-saffron" onclick="handlePrint()">Print / Save PDF</button>
-    </nav>
+    <div class="tabs no-print">
+      <button id="tabKundliBtn" class="tab-btn active" onclick="switchTab('kundli')">🪐 Free Kundli &amp; Panchang Generator</button>
+      <button id="tabFamilyBtn" class="tab-btn" onclick="switchTab('family')">🌳 Family Lineage Portal (Login)</button>
+    </div>
 
-    <!-- TAB 1: FAMILY LINEAGE TREE -->
-    <section id="tab-lineage" class="frosted-card">
-      <div class="card-header">
-        <h2 class="card-title">My Family Lineage Tree</h2>
-        <span style="font-size:0.85rem; color:#4A0E0E; font-weight:700;">Click any member to inspect Kundli</span>
-      </div>
+    <!-- ================= TAB 1: PUBLIC & FAMILY KUNDLI GENERATOR ================= -->
+    <div id="kundliSection">
+      <h2>🪐 Instant Vedic Kundli, Panchang &amp; Yearly Forecast</h2>
+      <p style="text-align:center; font-size:0.88em; color:#FFE8A3;">Enter birth details below. Place of birth automatically detects Latitude &amp; Longitude.</p>
 
-      <div class="form-grid no-print" style="margin-bottom:18px;">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="memberName" placeholder="e.g., Aarav Sharma" />
+      <div class="grid no-print">
+        <div>
+          <label>First Name *</label>
+          <input id="kFirst" placeholder="e.g., Manoj" required>
         </div>
-        <div class="form-group">
-          <label>Generation / Relation</label>
-          <select id="memberGen">
-            <option value="Generation 1 (Elders)">Generation 1 (Parents / Elders)</option>
-            <option value="Generation 2 (Self / Spouse)" selected>Generation 2 (Self / Spouse)</option>
-            <option value="Generation 3 (Children)">Generation 3 (Children)</option>
+        <div>
+          <label>Last Name *</label>
+          <input id="kLast" placeholder="e.g., Mehta" required>
+        </div>
+        <div>
+          <label>Date of Birth *</label>
+          <input id="kDob" type="date" required>
+        </div>
+        <div>
+          <label>Time of Birth *</label>
+          <input id="kTob" type="time" value="08:45" required>
+        </div>
+        <div>
+          <label>Birth Time Accuracy</label>
+          <select id="kTimeAcc">
+            <option value="Exact Time Known">Exact Time Known</option>
+            <option value="Approximate / Sunrise Default">Approximate / Time Unknown</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Birth Date</label>
-          <input type="date" id="memberDob" value="1990-05-15" />
-        </div>
-        <div class="form-group">
-          <label>Birth City</label>
-          <input type="text" id="memberCity" placeholder="e.g., Mumbai" />
-        </div>
-        <div class="form-group" style="display:flex; align-items:flex-end;">
-          <button class="btn-primary" style="width:100%;" onclick="addMember()">+ Add to Tree</button>
-        </div>
-      </div>
-
-      <div id="treeContainer"></div>
-    </section>
-
-    <!-- TAB 2: NORTH INDIAN KUNDLI -->
-    <section id="tab-kundli" class="frosted-card" style="display:none;">
-      <div class="card-header">
-        <h2 class="card-title">Janma Kundli — <span id="selectedMemberTitle">Sample Member</span></h2>
-      </div>
-
-      <div class="kundli-layout">
-        <div class="kundli-diamond-box">
-          <svg viewBox="0 0 300 300" width="100%" height="100%">
-            <rect x="2" y="2" width="296" height="296" fill="none" stroke="#B81414" stroke-width="3" />
-            <line x1="0" y1="0" x2="300" y2="300" stroke="#B81414" stroke-width="2" />
-            <line x1="300" y1="0" x2="0" y2="300" stroke="#B81414" stroke-width="2" />
-            <polygon points="150,0 300,150 150,300 0,150" fill="none" stroke="#B81414" stroke-width="2.5" />
-            <text x="150" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A0E0E">H1: Lagna (Asc)</text>
-            <text x="75" y="45" text-anchor="middle" font-size="12" fill="#1E242B">H2: Sun</text>
-            <text x="38" y="85" text-anchor="middle" font-size="12" fill="#1E242B">H3</text>
-            <text x="75" y="155" text-anchor="middle" font-size="12" fill="#1E242B">H4: Moon</text>
-            <text x="38" y="225" text-anchor="middle" font-size="12" fill="#1E242B">H5</text>
-            <text x="75" y="265" text-anchor="middle" font-size="12" fill="#1E242B">H6</text>
-            <text x="150" y="225" text-anchor="middle" font-size="12" fill="#1E242B">H7: Jup</text>
-            <text x="225" y="265" text-anchor="middle" font-size="12" fill="#1E242B">H8</text>
-            <text x="262" y="225" text-anchor="middle" font-size="12" fill="#1E242B">H9</text>
-            <text x="225" y="155" text-anchor="middle" font-size="12" fill="#1E242B">H10: Sat</text>
-            <text x="262" y="85" text-anchor="middle" font-size="12" fill="#1E242B">H11</text>
-            <text x="225" y="45" text-anchor="middle" font-size="12" fill="#1E242B">H12</text>
-          </svg>
-        </div>
-
         <div>
-          <table class="vedic-table">
+          <label>Astrology Standard (Ayanamsa)</label>
+          <select id="kSystem">
+            <option value="Lahiri">Lahiri (North Indian / Chitrapaksha)</option>
+            <option value="KP">KP (Krishnamurti Paddhati - South Indian)</option>
+          </select>
+        </div>
+       <div>
+          <label>Place of Birth (City / Town) *</label>
+          <div style="display:flex; gap:5px;">
+         <input id="kPlace" placeholder="e.g., Thane, Maharashtra or London, UK" oninput="lookupCoords()" onblur="lookupCoords()">
+            <button type="button" class="btn btn-sec" onclick="lookupCoords()" title="Fetch Coordinates">📍</button>
+          </div>
+          <small id="geoStatus" style="color:#6E0000; display:block; margin-top:3px;"></small>
+        </div>
+        <div>
+          <label>Detected Latitude / Longitude</label>
+          <div style="display:flex; gap:5px;">
+            <input id="kLat" type="text" placeholder="e.g., 19.22° N">
+            <input id="kLon" type="text" placeholder="e.g., 72.98° E">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="no-print" style="text-align:center; margin-top:14px;">
+        <button type="button" class="btn" style="font-size:1em; padding:10px 22px;" onclick="generateKundli()">✨ Generate Kundli &amp; Yearly Forecast</button>
+        <button type="button" id="btnDownloadPdf" class="btn btn-sec"  onclick="downloadKundliPDF()">📥 Download Free PDF</button>
+        <button type="button" id="btnPrintKundli" class="btn btn-sec"   onclick="printKundliOnly()">🖨️ Print Kundli</button>
+        <button type="button" id="btnPushToFamily" class="btn btn-sec"  onclick="copyKundliToFamilyForm()">➕ Add to Family Ledger</button>
+      </div>
+
+      <!-- Printable / PDF Kundli Preview -->
+      <div id="kundliReport">
+        <div style="text-align:center; border-bottom:2px solid #6E0000; padding-bottom:8px;">
+          <h2 style="margin:0;">🕉️ VEDIC JANMA KUNDLI &amp; PANCHANG REPORT</h2>
+          <p style="margin:4px 0; font-size:0.92em;">Generated via <strong>ManojBhardwaj.in</strong> | Standard: <strong id="repSystem">Lahiri</strong></p>
+        </div>
+
+        <table class="k-table" style="margin-top:10px;">
+          <tr><th>Name</th><td id="repName"></td><th>Date &amp; Time</th><td id="repDateTime"></td></tr>
+          <tr><th>Place of Birth</th><td id="repPlace"></td><th>Coordinates</th><td id="repCoords"></td></tr>
+          <tr><th>Time Accuracy</th><td id="repAcc"></td><th>Vikram Samvat</th><td id="repSamvat"></td></tr>
+        </table>
+
+        <div class="k-grid">
+          <div>
+            <h3>📜 Janma Panchang Details</h3>
+            <table class="k-table">
+              <tr><th>Vara (Weekday)</th><td id="repVara"></td></tr>
+              <tr><th>Tithi &amp; Paksha</th><td id="repTithi"></td></tr>
+              <tr><th>Janma Nakshatra &amp; Pada</th><td id="repNakshatra"></td></tr>
+              <tr><th>Yoga</th><td id="repYoga"></td></tr>
+              <tr><th>Karana</th><td id="repKarana"></td></tr>
+              <tr><th>Chandra Rashi (Moon Sign)</th><td id="repRashi"></td></tr>
+              <tr><th>Surya Rashi (Sun Sign)</th><td id="repSunSign"></td></tr>
+          <tr><th>Lagna (Ascendant)</th><td id="repLagna"></td></tr>
+            </table>
+          </div>
+          <div>
+            <h3>🔯 Lagna Kundli Chart</h3>
+            <div id="chartContainer"></div>
+            <p style="font-size:0.8em; text-align:center; color:#4A0000;">Formatted in <span id="repChartStyle">North Indian (Diamond)</span> style.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px;">🪐 Planetary Positions (Sidereal Graha Sphuta)</h3>
+        <table class="k-table">
+          <thead><tr><th>Graha (Planet)</th><th>Rashi (Sign)</th><th>Degrees</th><th>Nakshatra</th><th>Status</th></tr></thead>
+          <tbody id="repPlanets"></tbody>
+        </table>
+
+        <div style="margin-top:16px; background:#FFF8DC; border:1px solid #6E0000; padding:12px; border-radius:6px;">
+          <h3 style="margin-top:0; text-align:left; border:none;">📅 Yearly Forecast &amp; Transit Guidance (2026–2027)</h3>
+          <div id="repForecast" style="font-size:10.5pt; line-height:1.5;"></div>
+          <p style="font-size:0.82em; color:#6E0000; margin-bottom:0; margin-top:8px;"><em>Prepared in Lahiri &amp; KP Vedic standards for family reference and review by verified platform astrologers.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 2: FAMILY LINEAGE PORTAL ================= -->
+    <div id="familySection" style="display:none;">
+      <div id="loginBox" style="max-width:410px; margin:15px auto; background:#380303; border:2px solid #FFD700; border-radius:8px; padding:18px; text-align:center;">
+        <h2>🔐 Family &amp; Admin Login</h2>
+        <p style="font-size:0.85em; color:#FFE8A3;">Log in with <strong>Family</strong> or <strong>Admin</strong> credentials.</p>
+        <label style="text-align:left;">User ID</label>
+        <input id="uid" placeholder="Enter User ID">
+        <label style="text-align:left; margin-top:8px;">Password</label>
+        <input id="pwd" type="password" placeholder="Enter Password">
+        <button class="btn" style="width:100%; margin-top:12px;" onclick="unlock()">🔓 Unlock Family Ledger</button>
+        <p id="err" style="color:#FF8080; display:none; margin-top:8px;">❌ Invalid User ID or Password</p>
+      </div>
+
+      <div id="mainPortal" style="display:none;">
+        <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; background:#380303; padding:10px; border:1px solid #FFD700; border-radius:6px;">
+          <div>Role: <span id="roleBadge" class="badge-admin">FAMILY</span></div>
+          <div>
+            <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
+            <button class="btn" onclick="exportCSV()">📥 Export CSV</button>
+            <button class="btn btn-sec" onclick="changePass()">🔑 Password</button>
+            <button class="btn btn-sec" onclick="signOut()">🔒 Lock</button>
+          </div>
+        </div>
+        <form id="fForm" onsubmit="saveRec(event)" style="background:#380303; border:1px solid #FFD700; border-radius:8px; padding:14px; margin-bottom:16px;">
+          <h3 style="margin-top:0; color:#FFD700;">✍️ Add / Edit Family Member Record</h3>
+          <div class="grid">
+            <div>
+              <label>Member ID (Editable - e.g. M_25)</label>
+              <input id="mId" required>
+            </div>
+            <div>
+              <label>Sibling Birth Order (1 = Eldest)</label>
+              <input id="mOrder" type="number" value="1" min="1">
+            </div>
+            <div>
+              <label>Generation</label>
+              <select id="mGen">
+                <option value="G0_00">G0_00 (Root)</option>
+                <option value="G1_00">G1_00</option>
+                <option value="G2_00">G2_00</option>
+                <option value="G3_00" selected>G3_00</option>
+                <option value="G4_00">G4_00</option>
+                <option value="G5_00">G5_00</option>
+              </select>
+            </div>
+            <div>
+              <label>Lineage Branch</label>
+              <select id="mLin">
+                <option value="Paternal Lineage">Paternal Lineage</option>
+                <option value="Maternal Lineage">Maternal Lineage</option>
+                <option value="Root Ancestor">Root Ancestor</option>
+              </select>
+            </div>
+            <div>
+              <label>First Name *</label>
+              <input id="mFirst" required>
+            </div>
+            <div>
+              <label>Last Name</label>
+              <input id="mLast" value="Mehta">
+            </div>
+            <div>
+              <label>Father ID</label>
+              <select id="mFather"></select>
+            </div>
+            <div>
+              <label>Mother ID</label>
+              <select id="mMother"></select>
+            </div>
+            <div>
+              <label>Siblings (IDs)</label>
+              <input id="mSib" placeholder="e.g., M_22, M_23">
+            </div>
+            <div>
+              <label>Status</label>
+              <select id="mStat">
+                <option value="Alive">Alive</option>
+                <option value="Punyaatma">Punyaatma</option>
+              </select>
+            </div>
+            <div>
+              <label>Date of Birth</label>
+              <input id="mDob" type="date">
+            </div>
+            <div>
+              <label>Time of Birth</label>
+              <input id="mTob" type="time" value="08:45">
+            </div>
+            <div>
+              <label>Birth Place / Lifespan Note</label>
+              <input id="mPob" placeholder="City or Lifespan Note">
+            </div>
+            <div>
+              <label>Gotra</label>
+              <input id="mGotra" value="Bhardwaj">
+            </div>
+            <div>
+              <label>Email ID</label>
+              <input id="mEmail" type="email">
+            </div>
+            <div>
+              <label>Contact No</label>
+              <input id="mPhone">
+            </div>
+          </div>
+
+          <div id="adminLockBox" style="display:none; margin-top:10px; background:#4A0202; padding:8px; border-radius:4px; border:1px solid #FFD700;">
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; margin:0;">
+              <input id="mLocked" type="checkbox" style="width:auto;">
+              <span>🛡️ <strong>Admin Verified &amp; Locked</strong> — Locks row from family edits.</span>
+            </label>
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button type="submit" class="btn">✅ Save Record</button>
+            <button type="button" class="btn btn-sec" onclick="clr()">🧹 Clear</button>
+          </div>
+        </form>
+
+        <div style="overflow-x:auto;">
+          <table class="k-table">
             <thead>
               <tr>
-                <th>Vedic Parameter</th>
-                <th>Calculated Detail</th>
+                <th>ID</th>
+                <th>Order</th>
+                <th>Name</th>
+                <th>Lineage</th>
+                <th>Father</th>
+                <th>DOB</th>
+                <th>Place / Notes</th>
+                <th>Contact</th>
+                <th class="no-print">Action</th>
               </tr>
             </thead>
-            <tbody id="kundliDetailsBody">
-              <tr><td><strong>Birth Date &amp; Place</strong></td><td id="kundliDobCity">1990-05-15 • Mumbai</td></tr>
-              <tr><td><strong>Janma Rashi (Moon Sign)</strong></td><td>Makar (Capricorn)</td></tr>
-              <tr><td><strong>Nakshatra &amp; Pada</strong></td><td>Shravana • Pada 2</td></tr>
-              <tr><td><strong>Current Mahadasha</strong></td><td>Jupiter (Guru) Mahadasha</td></tr>
-            </tbody>
+            <tbody id="tBody"></tbody>
           </table>
         </div>
+
+        <div class="no-print" style="text-align:center; margin-top:14px;">
+          <button type="button" class="btn btn-danger" onclick="signOut()">🚪 Sign Out of Family Portal</button>
+        </div>
       </div>
-    </section>
-
-    <!-- TAB 3: DAILY PANCHANG -->
-    <section id="tab-panchang" class="frosted-card" style="display:none;">
-      <div class="card-header">
-        <h2 class="card-title">Today's Drik Panchang (Mumbai, India)</h2>
-      </div>
-      <table class="vedic-table">
-        <thead>
-          <tr>
-            <th>Panchang Element</th>
-            <th>Details &amp; Timings</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Tithi</strong></td><td>Shukla Chaturthi</td></tr>
-          <tr><td><strong>Nakshatra</strong></td><td>Purva Ashadha</td></tr>
-          <tr><td><strong>Yoga &amp; Karana</strong></td><td>Shula Yoga • Vanija Karana</td></tr>
-          <tr><td><strong>Abhijit Muhurta (Auspicious)</strong></td><td>11:58 AM – 12:46 PM</td></tr>
-          <tr><td><strong>Rahu Kaal (Avoid New Starts)</strong></td><td>10:42 AM – 12:12 PM</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-  </main>
-
-  <script>
-    let isPro = false;
-    let proPrice = 199;
-    let members = JSON.parse(localStorage.getItem('public_vedic_saas_v1')) || [
-      { name: 'Ramesh Sharma', gen: 'Generation 1 (Elders)', dob: '1962-08-10', city: 'Mumbai' },
-      { name: 'Aarav Sharma', gen: 'Generation 2 (Self / Spouse)', dob: '1990-05-15', city: 'Mumbai' }
-    ];
-
-    function updateAdminPrice() {
-      const val = document.getElementById('adminPriceInput').value;
-      proPrice = val ? parseInt(val, 10) : 199;
-      document.getElementById('displayPrice').textContent = '₹' + proPrice;
-      if (isPro) {
-        document.getElementById('planStatus').textContent = 'Current Plan: Pro Pass (₹' + proPrice + '/yr)';
-      }
-    }
-
-    function togglePlan() {
-      isPro = !isPro;
-      document.getElementById('planStatus').textContent = isPro
-        ? 'Current Plan: Pro Pass (₹' + proPrice + '/yr)'
-        : 'Current Plan: Free Preview';
-    }
-
-    function showTab(tabName, btn) {
-      document.getElementById('tab-lineage').style.display = tabName === 'lineage' ? 'block' : 'none';
-      document.getElementById('tab-kundli').style.display = tabName === 'kundli' ? 'block' : 'none';
-      document.getElementById('tab-panchang').style.display = tabName === 'panchang' ? 'block' : 'none';
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-    }
-
-    function renderTree() {
-      const container = document.getElementById('treeContainer');
-      const gens = ['Generation 1 (Elders)', 'Generation 2 (Self / Spouse)', 'Generation 3 (Children)'];
-      container.innerHTML = gens.map(g => {
-        const list = members.filter(m => m.gen === g);
-        if (!list.length) return '';
-        return `
-          <div class="lineage-generation">
-            <div class="gen-label">${g}</div>
-            <div class="tree-row">
-              ${list.map(m => `
-                <div class="member-node" onclick="inspectMember('${m.name}', '${m.dob}', '${m.city}')">
-                  <strong>${m.name}</strong><br/>
-                  <small>DOB: ${m.dob} • ${m.city}</small>
-                </div>
-              `).join('')}
-            </div>
-          </div>`;
-      }).join('');
-    }
-
-    function addMember() {
-      if (!isPro && members.length >= 3) {
-        alert('Free Preview allows up to 3 family members. Switch to Pro (₹' + proPrice + '/yr) to add unlimited generations.');
-        return;
-      }
-      const name = document.getElementById('memberName').value.trim();
-      const gen = document.getElementById('memberGen').value;
-      const dob = document.getElementById('memberDob').value;
-      const city = document.getElementById('memberCity').value.trim() || 'Mumbai';
-   if (!name) return alert('Please enter a name.');
-      members.push({ name, gen, dob, city });
-      localStorage.setItem('public_vedic_saas_v1', JSON.stringify(members));
-      document.getElementById('memberName').value = '';
-      renderTree();
-    }
-
-    function inspectMember(name, dob, city) {
-      document.getElementById('selectedMemberTitle').textContent = name;
-      document.getElementById('kundliDobCity').textContent = dob + ' • ' + city;
-      const secondTab = document.querySelectorAll('.tab-btn')[1];
-      showTab('kundli', secondTab);
-    }
-
-    function handlePrint() {
-      if (!isPro) {
-        alert('Print / Save PDF is a Pro feature (₹' + proPrice + '/yr). Click "Switch to Pro" in the saffron bar to test PDF export.');
-        return;
-      }
-      window.print();
-    }
-
-    renderTree();
-  </script>
+    </div>
+  </div>
+</div>
+<script src="family.js?v=17"></script>
+<script src="kundli.js?v=17"></script>
 </body>
 </html>
