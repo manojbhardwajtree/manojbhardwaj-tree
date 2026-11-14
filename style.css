@@ -1,100 +1,314 @@
+   /* ManojBhardwaj.in — Sacred Temple & AstroSage Colorful Theme (v18) */
 * { box-sizing: border-box; }
 
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #FF7722;
-  background-image: radial-gradient(rgba(255, 215, 0, 0.25) 1px, transparent 1px),
-                    linear-gradient(135deg, #FF6A00 0%, #FF9933 50%, #FF7722 100%);
-  background-size: 20px 20px, 100% 100%;
-  color: #FFFDF5;
-  padding: 16px;
   margin: 0;
+  padding: 16px;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: radial-gradient(circle at top, #5e0808 0%, #2b0202 55%, #160101 100%);
+  color: #FFF8E7;
+  min-height: 100vh;
 }
 
-/* 1 cm (~38px) Yellow-Gold Border Strip with Dark Edges */
 .sacred-frame {
-  max-width: 1180px;
-  margin: 10px auto;
-  background: #FFD700;
-  border: 4px solid #2B0500;
-  border-radius: 14px;
-  padding: 38px;
-  box-shadow: 0 10px 28px rgba(43, 5, 0, 0.55);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 6px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #FFD700, #FF8C00, #B30000, #FFD700);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
 }
 
 .inner-portal {
-  background: #5C0505;
-  border: 4px solid #2B0500;
-  border-radius: 8px;
-  padding: 20px;
+  background: linear-gradient(180deg, #4A0404 0%, #310202 100%);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  border-radius: 12px;
+  padding: 22px;
 }
 
-/* Header & Lord Ganesha Banner */
+/* Header */
 .ganesha-header {
   text-align: center;
-  background: linear-gradient(180deg, #8B0000 0%, #4A0202 100%);
+  padding: 16px 12px 18px 12px;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, #7A0909 0%, #440303 100%);
   border: 2px solid #FFD700;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 16px;
+  box-shadow: inset 0 0 24px rgba(255, 153, 51, 0.25);
+  margin-bottom: 18px;
 }
 
-.mantra { color: #FFD700; font-weight: bold; letter-spacing: 1px; margin: 4px 0; font-size: 1.05em; }
-h1, h2, h3 { color: #FFD700; text-align: center; margin: 6px 0; }
+.mantra {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: #FFD700;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 6px rgba(255, 140, 0, 0.6);
+  margin-top: 4px;
+}
+
+.ganesha-header h1 {
+  margin: 6px 0 4px 0;
+  font-size: 1.95em;
+  color: #FFFDF5;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
 
 /* Navigation Tabs */
-.tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
-.tab-btn { background: #380303; color: #FFD700; border: 2px solid #FFD700; padding: 10px 18px; font-weight: bold; cursor: pointer; border-radius: 6px; }
-.tab-btn.active { background: #FFD700; color: #5C0505; }
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
 
-/* Forms & Inputs */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
-label { display: block; font-size: 0.82em; color: #FFD700; margin-bottom: 3px; font-weight: bold; }
-input, select { width: 100%; padding: 8px; background: #1F0202; border: 1px solid #FFD700; color: #FFFDF5; border-radius: 4px; }
-input:focus, select:focus { outline: 2px solid #FF9933; }
+.tab-btn {
+  padding: 11px 20px;
+  font-size: 0.98em;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1.5px solid #FFD700;
+  background: #3B0303;
+  color: #FFE8A3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: #6E0707;
+  color: #FFFFFF;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #FF9933 0%, #FFD700 100%);
+  color: #3B0303;
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.45);
+}
+
+h2 {
+  text-align: center;
+  color: #FFD700;
+  margin-top: 0;
+}
+
+/* Form Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  background: rgba(255, 248, 220, 0.06);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 16px;
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #FFD97D;
+  margin-bottom: 4px;
+}
+
+input, select {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 6px;
+  border: 1.5px solid #D4AF37;
+  background: #FFFDF7;
+  color: #2B0500;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #FF8C00;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.3);
+}
 
 /* Buttons */
-.btn { background: #FFD700; color: #5C0505; font-weight: bold; padding: 8px 14px; border: 2px solid #2B0500; border-radius: 5px; cursor: pointer; margin: 2px; }
-.btn:hover { background: #FFE853; }
-.btn-danger { background: #B30000; color: #FFF; border-color: #FFD700; }
-.btn-sec { background: #7A0000; color: #FFD700; border: 1px solid #FFD700; }
-
-/* Tables & Badges */
-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 0.85em; }
-th, td { border: 1px solid #9E2A2B; padding: 7px; text-align: left; }
-th { background: #8B0000; color: #FFD700; }
-tr:nth-child(even) td { background: rgba(0, 0, 0, 0.25); }
-.badge-admin { background: #FFD700; color: #5C0505; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
-.badge-lock { background: #1E6B2B; color: #FFF; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; }
-
-/* Kundli A4 PDF Report Styling */
-#kundliReport {
-  background: #FFFDF4;
-  color: #1C0D02;
-  padding: 20px;
-  border: 14px solid #FFD700;
-  outline: 3px solid #4A0000;
-  border-radius: 6px;
-  margin-top: 18px;
-  display: none;
+.btn {
+  background: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
+  color: #360202;
+  border: 1px solid #FFF2B2;
+  padding: 9px 16px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-#kundliReport h2 { font-family: Georgia, serif; font-size: 18pt; color: #6E0000; }
-#kundliReport h3 { font-family: Georgia, serif; font-size: 12.5pt; color: #6E0000; border-bottom: 1px solid #B8860B; padding-bottom: 3px; }
-.k-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
-.k-table { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
-.k-table th, .k-table td { border: 1px solid #6E0000; padding: 6px; color: #1C0D02; background: #FFF; }
-.k-table th { background: #F7E6B5; color: #6E0000; }
-.chart-svg { width: 100%; max-width: 300px; display: block; margin: 0 auto; }
-.signout-bar { text-align: center; margin-top: 24px; padding-top: 14px; border-top: 1px solid #9E2A2B; }
 
-@media (max-width: 720px) {
-  .sacred-frame { padding: 16px; }
-  .k-grid { grid-template-columns: 1fr; }
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(255, 215, 0, 0.4);
+}
+
+.btn-sec {
+  background: linear-gradient(135deg, #7A0C0C 0%, #A81414 100%);
+  color: #FFF8E7;
+  border: 1px solid #FFD700;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #990000 0%, #CC1111 100%);
+  color: #FFFFFF;
+  border: 1px solid #FF9999;
+}
+
+/* Kundli Report Container */
+#kundliReport {
+  display: none;
+  margin-top: 20px;
+  background: linear-gradient(180deg, #FFFDF7 0%, #FFF5DC 100%);
+  color: #2B0500;
+  border: 2.5px solid #B8860B;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+#kundliReport h2, #kundliReport h3 {
+  color: #7A0404;
+  border-bottom: 1.5px solid #E6B800;
+  padding-bottom: 4px;
+}
+
+.k-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.k-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.k-table th, .k-table td {
+  border: 1px solid #D9B36C;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.k-table th {
+  background: linear-gradient(135deg, #F9E090 0%, #F3C65F 100%);
+  color: #5C0000;
+  font-weight: 700;
+}
+
+#mainPortal .k-table {
+  color: #2B0500;
+}
+
+#mainPortal .k-table tr:nth-child(even) {
+  background: #FFF9E8;
+}
+
+/* Planet Badges */
+.p-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+/* 12-Month AstroSage-Style Forecast Grid */
+.forecast-summary-banner {
+  background: linear-gradient(135deg, #6E0000 0%, #9E1B1B 100%);
+  color: #FFFDF5;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 5px solid #FFD700;
+  margin-bottom: 14px;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.month-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E0B85C;
+  border-top: 4px solid #B30000;
+  border-radius: 8px;
+  padding: 11px 13px;
+  box-shadow: 0 3px 8px rgba(110, 0, 0, 0.08);
+}
+
+.month-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #E0B85C;
+  padding-bottom: 5px;
+  margin-bottom: 6px;
+}
+
+.month-title {
+  font-weight: 800;
+  color: #6E0000;
+  font-size: 1em;
+}
+
+.masa-pill {
+  background: #FFF0C2;
+  color: #7A3E00;
+  border: 1px solid #E0A800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 0.78em;
+  font-weight: 700;
+}
+
+.chart-svg {
+  max-width: 300px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+#loginBox {
+  max-width: 400px;
+  margin: 10px auto;
+  background: rgba(255, 248, 220, 0.08);
+  border: 1.5px solid #FFD700;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.badge-admin {
+  background: #FFD700;
+  color: #4A0202;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.85em;
+}
+
+.badge-lock {
+  background: #E8F5E9;
+  color: #1B5E20;
+  border: 1px solid #81C784;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 0.78em;
+  font-weight: 700;
 }
 
 @media print {
   .no-print { display: none !important; }
-  body { background: #FFF; color: #000; padding: 0; }
-  .sacred-frame, .inner-portal { border: none; padding: 0; background: #FFF; color: #000; box-shadow: none; }
-  th, td { border: 1px solid #333; color: #000; }
+  body { background: #FFF; padding: 0; }
+  .sacred-frame, .inner-portal { border: none; box-shadow: none; background: #FFF; padding: 0; }
 }
