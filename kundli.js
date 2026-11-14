@@ -1,114 +1,3 @@
-let geoTimer = null;
-
-window.addEventListener("DOMContentLoaded", function() {
-  const latEl = document.getElementById("kLat");
-  const lonEl = document.getElementById("kLon");
-  const placeEl = document.getElementById("kPlace");
-  if (latEl) { latEl.type = "text"; latEl.placeholder = "e.g., 23.29° N"; }
-  if (lonEl) { lonEl.type = "text"; lonEl.placeholder = "e.g., 76.20° E"; }
-  if (placeEl) {
-    placeEl.addEventListener("input", function() {
-      clearTimeout(geoTimer);
-      geoTimer = setTimeout(lookupCoords, 400);
-    });
-  }
-});
-
-
-function switchTab(t) {
-  const kSec = document.getElementById("kundliSection");
-  const fSec = document.getElementById("familySection");
-  const kBtn = document.getElementById("tabKundliBtn");
-  const fBtn = document.getElementById("tabFamilyBtn");
-  if (kSec) kSec.style.display = t === "kundli" ? "block" : "none";
-  if (fSec) fSec.style.display = t === "family" ? "block" : "none";
-  if (kBtn) kBtn.classList.toggle("active", t === "kundli");
-  if (fBtn) fBtn.classList.toggle("active", t === "family");
-}
-
-const CITIES = {
-  "mumbai": new Array(19.08, 72.88), "thane": new Array(19.22, 72.98), "pune": new Array(18.52, 73.86),
-  "delhi": new Array(28.61, 77.21), "new delhi": new Array(28.61, 77.21), "chandigarh": new Array(30.73, 76.78),
-  "ludhiana": new Array(30.90, 75.86), "amritsar": new Array(31.63, 74.87), "jalandhar": new Array(31.33, 75.58),
-  "patiala": new Array(30.34, 76.39), "punjab": new Array(31.15, 75.34), "haryana": new Array(29.06, 76.09),
-  "jaipur": new Array(26.91, 75.79), "lucknow": new Array(26.85, 80.95), "varanasi": new Array(25.32, 82.97),
-  "kolkata": new Array(22.57, 88.36), "chennai": new Array(13.08, 80.27), "bengaluru": new Array(12.97, 77.59),
-  "hyderabad": new Array(17.39, 78.49), "ahmedabad": new Array(23.02, 72.57), "haridwar": new Array(29.95, 78.16)
-};
-
-function fmtLat(v) { return Math.abs(v).toFixed(2) + "° " + (v >= 0 ? "N" : "S"); }
-function fmtLon(v) { return Math.abs(v).toFixed(2) + "° " + (v >= 0 ? "E" : "W"); }
-
-function parseCoord(s, fallback) {
-  if (!s) return fallback;
-  const n = parseFloat(String(s).replace(/[^\d.-]/g, ""));
-  if (isNaN(n)) return fallback;
-  return (/[SW]/i.test(s) && n > 0) ? -n : n;
-}
-
-async function lookupCoords() {
-  const placeEl = document.getElementById("kPlace");
-  const st = document.getElementById("geoStatus");
-  if (!placeEl) return;
-  const raw = placeEl.value.trim();
-  if (raw.length < 2) {
-    if (st) st.textContent = "";
-    return;
-  }
-
-  const parts = raw.toLowerCase().split(/[\s,]+/).filter(Boolean);
-  const cityOnly = raw.toLowerCase().split(",").at(0).trim();
-  const firstWord = parts.at(0) || "";
-  const matchedKey = CITIES[cityOnly] ? cityOnly : (CITIES[firstWord] ? firstWord : null);
-
-  if (matchedKey) {
-    const c = CITIES[matchedKey];
-    document.getElementById("kLat").value = fmtLat(c.at(0));
-    document.getElementById("kLon").value = fmtLon(c.at(1));
-    if (st) st.textContent = "✅ Detected: " + raw + " (" + fmtLat(c.at(0)) + ", " + fmtLon(c.at(1)) + ")";
-    return;
-  }
-
-  if (st) st.textContent = "🔍 Searching coordinates for " + raw + "...";
-  try {
-    const base = "https://" + "geocoding-api." + "open-meteo.com" + "/v1/search?count=1&language=en&format=json&name=";
-    let r = await fetch(base + encodeURIComponent(raw));
-    let d = r.ok ? await r.json() : null;
-
-    if ((!d || !d.results || d.results.length === 0) && cityOnly !== raw.toLowerCase()) {
-      r = await fetch(base + encodeURIComponent(cityOnly));
-      d = r.ok ? await r.json() : null;
-    }
-
-    if ((!d || !d.results || d.results.length === 0) && firstWord.length >= 3) {
-      r = await fetch(base + encodeURIComponent(firstWord));
-      d = r.ok ? await r.json() : null;
-    }
-
-    if (d && d.results && d.results.length > 0) {
-      const loc = d.results.at(0);
-      const latVal = Number(loc.latitude);
-      const lonVal = Number(loc.longitude);
-      const label = [loc.name, loc.admin1, loc.country].filter(Boolean).join(", ");
-      document.getElementById("kLat").value = fmtLat(latVal);
-      document.getElementById("kLon").value = fmtLon(lonVal);
-      if (st) st.textContent = "✅ Detected: " + label + " (" + fmtLat(latVal) + ", " + fmtLon(lonVal) + ")";
-    } else {
-      if (st) st.textContent = "⚠️ Location not auto-found. Check spelling or enter Lat/Lon manually.";
-    }
-  } catch (e) {
-    if (st) st.textContent = "⚠️ Lookup slow. Enter Lat/Lon manually if needed.";
-  }
-}
-const RASHIS = new Array("Mesha (Aries)", "Vrishabha (Taurus)", "Mithuna (Gemini)", "Karka (Cancer)", "Simha (Leo)", "Kanya (Virgo)", "Tula (Libra)", "Vrishchika (Scorpio)", "Dhanu (Sagittarius)", "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)");
-const NAKS = new Array("Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati");
-const TITHIS = new Array("Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima / Amavasya");
-const YOGAS = new Array("Vishkambha", "Priti", "Ayushman", "Saubhagya", "Shobhana", "Atiganda", "Sukarma", "Dhriti", "Shoola", "Ganda", "Vriddhi", "Dhruva", "Vyaghata", "Harshana", "Vajra", "Siddhi", "Vyatipata", "Variyan", "Parigha", "Shiva", "Siddha", "Sadhya", "Shubha", "Shukla", "Brahma", "Indra", "Vaidhriti");
-const KARANAS = new Array("Bava", "Balava", "Kaulava", "Taitila", "Gara", "Vanija", "Vishti", "Shakuni", "Chatushpada", "Naga", "Kimstughna");
-const VARAS = new Array("Ravivara (Sunday)", "Somavara (Monday)", "Mangalavara (Tuesday)", "Budhavara (Wednesday)", "Guruvara (Thursday)", "Shukravara (Friday)", "Shanivara (Saturday)");
-
-function norm(x) { return ((x % 360) + 360) % 360; }
-
 async function generateKundli() {
   const first = document.getElementById("kFirst").value.trim();
   const last = document.getElementById("kLast").value.trim();
@@ -126,7 +15,7 @@ async function generateKundli() {
   if (!document.getElementById("kLat").value || !document.getElementById("kLon").value) {
     await lookupCoords();
   }
-    const lat = parseCoord(document.getElementById("kLat").value, 28.61);
+  const lat = parseCoord(document.getElementById("kLat").value, 28.61);
   const lon = parseCoord(document.getElementById("kLon").value, 77.21);
 
   const partsD = dob.split("-");
@@ -159,6 +48,26 @@ async function generateKundli() {
   const diff = norm(moon - sun);
   const tNum = Math.floor(diff / 12);
 
+  const grahas = new Array(
+    { name: "Lagna (Ascendant)", lon: lagna, st: "Rising", bg: "#FFF3CD", fg: "#6E0000" },
+    { name: "Surya (Sun)", lon: sun, st: "Direct", bg: "#FFE0B2", fg: "#BF360C" },
+    { name: "Chandra (Moon)", lon: moon, st: "Direct", bg: "#E3F2FD", fg: "#0D47A1" },
+    { name: "Mangal (Mars)", lon: mars, st: "Direct", bg: "#FFCDD2", fg: "#B71C1C" },
+    { name: "Budha (Mercury)", lon: merc, st: "Direct", bg: "#C8E6C9", fg: "#1B5E20" },
+    { name: "Guru (Jupiter)", lon: jup, st: "Direct", bg: "#FFF9C4", fg: "#827717" },
+    { name: "Shukra (Venus)", lon: ven, st: "Direct", bg: "#F8BBD0", fg: "#880E4F" },
+    { name: "Shani (Saturn)", lon: sat, st: "Direct", bg: "#D1C4E9", fg: "#311B92" },
+    { name: "Rahu (North Node)", lon: rahu, st: "Retrograde", bg: "#CFD8DC", fg: "#263238" },
+    { name: "Ketu (South Node)", lon: ketu, st: "Retrograde", bg: "#D7CCC8", fg: "#3E2723" }
+  );
+
+  let akPlanet = grahas.at(1);
+  grahas.slice(1, 8).forEach(function(g) {
+    if ((g.lon % 30) > (akPlanet.lon % 30)) akPlanet = g;
+  });
+
+  const dashaObj = computeVimshottari(moon, yr);
+
   document.getElementById("repSystem").textContent = sys === "KP" ? "KP (Krishnamurti Paddhati)" : "Lahiri (Chitrapaksha)";
   document.getElementById("repName").textContent = (first + " " + last).trim();
   document.getElementById("repDateTime").textContent = dob + " at " + tob;
@@ -169,47 +78,43 @@ async function generateKundli() {
   document.getElementById("repVara").textContent = VARAS.at(istDate.getUTCDay());
   document.getElementById("repTithi").textContent = (tNum < 15 ? "Shukla Paksha - " : "Krishna Paksha - ") + TITHIS.at(tNum % 15);
   document.getElementById("repNakshatra").textContent = NAKS.at(nakIdx) + " (Pada " + pada + ")";
-  document.getElementById("repYoga").textContent = YOGAS.at(Math.floor(norm(moon + sun) / (360 / 27)));
-  document.getElementById("repKarana").textContent = KARANAS.at(Math.floor(diff / 6) % 11);
+  document.getElementById("repYoga").textContent = YOGAS.at(Math.floor(norm(moon + sun) / (360 / 27))) + " | AK: " + akPlanet.name.split(" ").at(0);
+  document.getElementById("repKarana").textContent = KARANAS.at(Math.floor(diff / 6) % 11) + " | Dasha: " + dashaObj.activeLord.split(" ").at(0);
   document.getElementById("repRashi").textContent = RASHIS.at(mIdx);
   document.getElementById("repSunSign").textContent = RASHIS.at(sIdx);
   document.getElementById("repLagna").textContent = RASHIS.at(lIdx);
-  const grahas = new Array(
-    { name: "Lagna (Ascendant)", lon: lagna, st: "Rising" },
-    { name: "Surya (Sun)", lon: sun, st: "Direct" },
-    { name: "Chandra (Moon)", lon: moon, st: "Direct" },
-    { name: "Mangal (Mars)", lon: mars, st: "Direct" },
-    { name: "Budha (Mercury)", lon: merc, st: "Direct" },
-    { name: "Guru (Jupiter)", lon: jup, st: "Direct" },
-    { name: "Shukra (Venus)", lon: ven, st: "Direct" },
-    { name: "Shani (Saturn)", lon: sat, st: "Direct" },
-    { name: "Rahu (North Node)", lon: rahu, st: "Retrograde" },
-    { name: "Ketu (South Node)", lon: ketu, st: "Retrograde" }
-  );
 
   const pb = document.getElementById("repPlanets");
   pb.innerHTML = "";
   grahas.forEach(function(g) {
-    pb.innerHTML += "<tr><td><strong>" + g.name + "</strong></td><td>" + RASHIS.at(Math.floor(g.lon / 30)) + "</td><td>" + (g.lon % 30).toFixed(2) + "°</td><td>" + NAKS.at(Math.floor(g.lon / (360 / 27))) + "</td><td>" + g.st + "</td></tr>";
+    const isAK = g.name === akPlanet.name ? ' <span style="background:#FFD700;color:#4A0202;padding:1px 5px;border-radius:6px;font-size:0.75em;font-weight:800;">AK</span>' : "";
+    pb.innerHTML += "<tr>" +
+      "<td><span class='p-badge' style='background:" + g.bg + ";color:" + g.fg + ";'>" + g.name + "</span>" + isAK + "</td>" +
+      "<td><strong>" + RASHIS.at(Math.floor(g.lon / 30)) + "</strong></td>" +
+      "<td>" + (g.lon % 30).toFixed(2) + "°</td>" +
+      "<td>" + NAKS.at(Math.floor(g.lon / (360 / 27))) + "</td>" +
+      "<td>" + g.st + "</td>" +
+    "</tr>";
   });
 
   document.getElementById("repChartStyle").textContent = sys === "KP" ? "South Indian (Square)" : "North Indian (Diamond)";
   document.getElementById("chartContainer").innerHTML = sys === "KP" ? buildSouthChart(grahas) : buildNorthChart(lIdx, grahas);
 
-  const fc = new Array(
-    "<strong>Career & Finance:</strong> Steady expansion in leadership and family enterprise; favorable quarters for long-term investments.<br><strong>Family & Harmony:</strong> Stronger bonding with elders and ancestral roots; auspicious family gatherings indicated.<br><strong>Health & Guidance:</strong> Maintain disciplined morning routines and balanced diet.",
-    "<strong>Career & Finance:</strong> Recognition for methodical work and property/asset stability.<br><strong>Family & Harmony:</strong> Supportive domestic environment; good period for resolving past misunderstandings.<br><strong>Health & Guidance:</strong> Focus on throat/respiratory care during seasonal shifts.",
-    "<strong>Career & Finance:</strong> New communication channels, writing, or advisory opportunities flourish.<br><strong>Family & Harmony:</strong> Short travels with siblings and relatives bring joy.<br><strong>Health & Guidance:</strong> Prioritize restful sleep and nervous system calm."
-  );
-  document.getElementById("repForecast").innerHTML = "<p style='margin:0 0 6px 0;'><strong>Chandra Rashi (" + RASHIS.at(mIdx) + ") &amp; Lagna (" + RASHIS.at(lIdx) + ") Yearly Outlook:</strong></p>" + fc.at(mIdx % 3);
+  document.getElementById("repForecast").innerHTML = build12MonthForecast(mIdx, lIdx, dashaObj);
+
+  window.lastGeneratedKundli = {
+    rashi: RASHIS.at(mIdx),
+    nakshatra: NAKS.at(nakIdx),
+    pada: pada,
+    lagna: RASHIS.at(lIdx),
+    atmakaraka: akPlanet.name.split(" ").at(0)
+  };
 
   document.getElementById("kundliReport").style.display = "block";
   document.getElementById("btnDownloadPdf").style.display = "inline-block";
   document.getElementById("btnPrintKundli").style.display = "inline-block";
   const pushBtn = document.getElementById("btnPushToFamily");
-  if (pushBtn && typeof currentRole !== "undefined" && currentRole) {
-    pushBtn.style.display = "inline-block";
-  }
+  if (pushBtn) pushBtn.style.display = "inline-block";
   document.getElementById("kundliReport").scrollIntoView({ behavior: "smooth" });
 }
 
@@ -223,10 +128,10 @@ function buildNorthChart(lIdx, grahas) {
   const cy = new Array(76, 38, 82, 150, 218, 262, 224, 262, 218, 150, 82, 38);
   let lbl = "";
   for (let i = 0; i < 12; i++) {
-    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) - 6) + '" font-size="10" fill="#6E0000" text-anchor="middle" font-weight="bold">' + (((lIdx + i) % 12) + 1) + '</text>';
-    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) + 8) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + h.at(i) + '</text>';
+    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) - 6) + '" font-size="10" fill="#B30000" text-anchor="middle" font-weight="bold">' + (((lIdx + i) % 12) + 1) + '</text>';
+    lbl += '<text x="' + cx.at(i) + '" y="' + (cy.at(i) + 8) + '" font-size="9.5" fill="#1C0D02" font-weight="bold" text-anchor="middle">' + h.at(i) + '</text>';
   }
-  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#FFFDF4" stroke="#6E0000" stroke-width="2"/><line x1="2" y1="2" x2="298" y2="298" stroke="#6E0000" stroke-width="1.5"/><line x1="298" y1="2" x2="2" y2="298" stroke="#6E0000" stroke-width="1.5"/><polygon points="150,2 298,150 150,298 2,150" fill="none" stroke="#6E0000" stroke-width="1.5"/>' + lbl + '</svg>';
+  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#FFF9E6" stroke="#8B0000" stroke-width="2.5"/><line x1="2" y1="2" x2="298" y2="298" stroke="#B8860B" stroke-width="1.5"/><line x1="298" y1="2" x2="2" y2="298" stroke="#B8860B" stroke-width="1.5"/><polygon points="150,2 298,150 150,298 2,150" fill="rgba(255,215,0,0.08)" stroke="#8B0000" stroke-width="1.8"/>' + lbl + '</svg>';
 }
 
 function buildSouthChart(grahas) {
@@ -241,9 +146,9 @@ function buildSouthChart(grahas) {
   for (let i = 0; i < 12; i++) {
     const x = cols.at(i) * 74 + 2;
     const y = rows.at(i) * 74 + 2;
-    cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#6E0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#6E0000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9" fill="#1C0D02" text-anchor="middle">' + s.at(i) + '</text>';
+    cells += '<rect x="' + x + '" y="' + y + '" width="74" height="74" fill="#FFFDF4" stroke="#8B0000" stroke-width="1.5"/><text x="' + (x + 6) + '" y="' + (y + 14) + '" font-size="9" fill="#B30000" font-weight="bold">' + (i + 1) + '</text><text x="' + (x + 37) + '" y="' + (y + 42) + '" font-size="9.5" fill="#1C0D02" font-weight="bold" text-anchor="middle">' + s.at(i) + '</text>';
   }
-  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#6E0000" stroke-width="2"/>' + cells + '<text x="150" y="154" font-size="12" fill="#6E0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
+  return '<svg viewBox="0 0 300 300" class="chart-svg"><rect x="2" y="2" width="296" height="296" fill="#F7E6B5" stroke="#8B0000" stroke-width="2.5"/>' + cells + '<text x="150" y="154" font-size="12" fill="#8B0000" font-weight="bold" text-anchor="middle">KP RASHI</text></svg>';
 }
 
 function downloadKundliPDF() {
@@ -262,7 +167,7 @@ function downloadKundliPDF() {
   }
 
   const s = document.createElement("script");
-  s.src = "https://" + "cdnjs" + ".cloudflare" + ".com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+  s.src = "https://cloudflare.com";
   s.onload = function() {
     html2pdf().set(opt).from(el).save();
   };
@@ -273,27 +178,29 @@ function downloadKundliPDF() {
 }
 
 function printKundliOnly() {
-  const w = window.open("", "_blank", "width=850,height=900");
+  const w = window.open("", "_blank", "width=900,height=950");
   if (!w) {
     alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
     return;
   }
-  w.document.write("<html><head><title>Print Kundli</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.chart-svg{max-width:280px;display:block;margin:auto;}</style></head><body>" + document.getElementById("kundliReport").innerHTML + "</body></html>");
-  w.document.close();
-  w.focus();
-  setTimeout(function() { w.print(); }, 250);
+  w.document.write("Print Kundlibody{font-family:Arial;padding:18px;color:#2B0500;}table{width:100%;border-collapse:collapse;margin-bottom:10px;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;font-size:12px;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.month-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.month-card{border:1px solid #B8860B;padding:8px;border-radius:6px;font-size:11px;}.chart-svg{max-width:260px;display:block;margin:auto;}" + document.getElementById("kundliReport").innerHTML + "");
+w.document.close();
+w.focus();
+setTimeout(function() { w.print(); }, 250);
 }
-
 function copyKundliToFamilyForm() {
-  switchTab("family");
-  document.getElementById("mFirst").value = document.getElementById("kFirst").value;
-  document.getElementById("mLast").value = document.getElementById("kLast").value;
-  document.getElementById("mDob").value = document.getElementById("kDob").value;
-  document.getElementById("mTob").value = document.getElementById("kTob").value;
-  const mPob = document.getElementById("mPob");
-  if (mPob) {
-    mPob.value = document.getElementById("kPlace").value + " (" + document.getElementById("kSystem").value + ")";
-  }
-  const fForm = document.getElementById("fForm");
-  if (fForm) fForm.scrollIntoView({ behavior: "smooth" });
+switchTab("family");
+document.getElementById("mFirst").value = document.getElementById("kFirst").value;
+document.getElementById("mLast").value = document.getElementById("kLast").value;
+document.getElementById("mDob").value = document.getElementById("kDob").value;
+document.getElementById("mTob").value = document.getElementById("kTob").value;
+const mPob = document.getElementById("mPob");
+const k = window.lastGeneratedKundli;
+if (mPob) {
+const astroTag = k ? (" | " + k.rashi.split(" ").at(0) + ", " + k.nakshatra + " P" + k.pada + ", Lagna: " + k.lagna.split(" ").at(0) + ", AK: " + k.atmakaraka) : "";
+mPob.value = document.getElementById("kPlace").value + " (" + document.getElementById("kSystem").value + ")" + astroTag;
+}
+window.pendingVedicMeta = k || null;
+const fForm = document.getElementById("fForm");
+if (fForm) fForm.scrollIntoView({ behavior: "smooth" });
 }
