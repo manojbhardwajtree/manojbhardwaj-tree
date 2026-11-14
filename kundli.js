@@ -152,42 +152,21 @@ function buildSouthChart(grahas) {
 }
 
 function downloadKundliPDF() {
-  const el = document.getElementById("kundliReport");
-  const fname = (document.getElementById("kFirst").value.trim() || "Kundli") + "_Vedic_Kundli.pdf";
-  const opt = {
-    margin: 8,
-    filename: fname,
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  };
-
-  if (typeof html2pdf !== "undefined") {
-    html2pdf().set(opt).from(el).save();
+  const rep = document.getElementById("kundliReport");
+  if (!rep || rep.style.display === "none") {
+    alert("Please click Generate Kundli & Yearly Forecast first.");
     return;
   }
-
-  const s = document.createElement("script");
-  s.src = "https://cloudflare.com";
-  s.onload = function() {
-    html2pdf().set(opt).from(el).save();
-  };
-  s.onerror = function() {
-    alert("Could not load PDF library. Please check your internet connection or use Print Kundli.");
-  };
-  document.head.appendChild(s);
+  const origTitle = document.title;
+  const fname = (document.getElementById("kFirst").value.trim() || "Vedic") + "_Kundli_Report";
+  document.title = fname;
+  window.print();
+  setTimeout(function() { document.title = origTitle; }, 500);
 }
 
 function printKundliOnly() {
-  const w = window.open("", "_blank", "width=900,height=950");
-  if (!w) {
-    alert("Pop-up blocked! Please allow pop-ups for this site to print the Kundli.");
-    return;
-  }
-  w.document.write("Print Kundlibody{font-family:Arial;padding:18px;color:#2B0500;}table{width:100%;border-collapse:collapse;margin-bottom:10px;}th,td{border:1px solid #6E0000;padding:6px;text-align:left;font-size:12px;}th{background:#F7E6B5;}.k-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.month-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.month-card{border:1px solid #B8860B;padding:8px;border-radius:6px;font-size:11px;}.chart-svg{max-width:260px;display:block;margin:auto;}" + document.getElementById("kundliReport").innerHTML + "");
-w.document.close();
-w.focus();
-setTimeout(function() { w.print(); }, 250);
-}
+  downloadKundliPDF();
+ 
 function copyKundliToFamilyForm() {
 switchTab("family");
 document.getElementById("mFirst").value = document.getElementById("kFirst").value;
